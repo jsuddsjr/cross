@@ -9,7 +9,8 @@
   <body>
     <button onclick="save('wordshape.txt')">Download</button>
     <div>
-      Words: <span id="count-words"></span> Shapes: <span id="count-shapes"></span> Consonant ratio:
+      Words: <span id="count-words"></span> Shapes:
+      <span id="count-shapes"></span> Consonant ratio:
       <span id="ratio"></span>
     </div>
     <pre id="words" style="font-size: 10px"></pre>
@@ -32,8 +33,11 @@
         for (let input of inputFiles) {
           const response = await fetch(input);
           const text = await response.text();
-          for (let word of text.split(/(?:\r?\n|\(|,| - )/g).map((w) => w.replace(nonWord, ""))) {
-            if (word.length > 2 && word.length < 24) words.add(word.toLowerCase());
+          for (let word of text
+            .split(/(?:\r?\n|\(|,| - )/g)
+            .map((w) => w.replace(nonWord, ""))) {
+            if (word.length > 2 && word.length < 24)
+              words.add(word.toLowerCase());
           }
         }
         document.getElementById("count-words").textContent = words.size;
@@ -66,7 +70,10 @@
           total += key.length;
         }
 
-        document.getElementById("ratio").textContent = `${((ones * 100) / total).toFixed(2)}`;
+        document.getElementById("ratio").textContent = `${(
+          (ones * 100) /
+          total
+        ).toFixed(2)}`;
       }
 
       function keySort(a, b) {
@@ -75,14 +82,14 @@
 
       const output = document.getElementById("words");
       clean([
-        "data/missing.txt",
-        "data/tartan.txt",
-        "data/common.txt",
-        "data/dict.txt",
-        "data/wordlist.txt",
-        "data/wordlist-full.txt",
-        "data/words_alpha.txt",
-        "data/en_US.txt",
+        "missing.txt",
+        "tartan.txt",
+        "common.txt",
+        "dict.txt",
+        "wordlist.txt",
+        "wordlist-full.txt",
+        "words_alpha.txt",
+        "en_US.txt",
       ]).then(
         (words) =>
           (output.textContent = [...index(words).entries()]
