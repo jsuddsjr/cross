@@ -36,11 +36,11 @@ describe("WordIndex", () => {
     expect(words.length).toBe(3);
   }, 100);
 
-  it("spaces match any character", () => {
-    const wi = new WordIndex();
-    const words = wi.getWordsByShape("   ");
-    expect(words.length).toBe(9);
-  });
+  // it("spaces match any character", () => {
+  //   const wi = new WordIndex();
+  //   const words = wi.getWordsByShape("   ");
+  //   expect(words.length).toBe(9);
+  // });
 
   it("should find specific words", () => {
     const wi = new WordIndex();
