@@ -53,7 +53,9 @@ export default class WordIndex {
   getPotentialsByShape(shape) {
     if (potentialCache.has(shape)) return potentialCache.get(shape);
     const maps = Array.from({ length: shape.length }, () => new Set());
-    this.getWordsByShape(shape).forEach((w) => [...w].map((c, i) => maps[i].add(c)));
+    this.getWordsByShape(shape).forEach((w) =>
+      [...w].map((c, i) => maps[i].add(c))
+    );
     return maps;
   }
 
@@ -75,11 +77,18 @@ export default class WordIndex {
     // Convert letters into shapes and search.
     if (types.size > 3 || ShapeModel.letterMatch.test(shape)) {
       // Convert shape into word match by removing shape characters.
-      const wordMatch = new RegExp("^" + shape.replace(ShapeModel.shapeMatch, ShapeModel.anyType));
+      const wordMatch = new RegExp(
+        "^" + shape.replace(ShapeModel.shapeMatch, ShapeModel.anyType)
+      );
       // Convert to simple shape by converting letters into VOWEL and CONSONANT.
-      const simpleShape = shape.replace(new RegExp(ShapeModel.letterMatch, "g"), (sub) => {
-        return /[aeiou]/.test(sub) ? ShapeModel.vowelType : ShapeModel.consonantType;
-      });
+      const simpleShape = shape.replace(
+        new RegExp(ShapeModel.letterMatch, "g"),
+        (sub) => {
+          return /[aeiou]/.test(sub)
+            ? ShapeModel.vowelType
+            : ShapeModel.consonantType;
+        }
+      );
       return matchShapeSimple(simpleShape).filter((w) => wordMatch.test(w));
     }
 
@@ -127,7 +136,7 @@ async function loadIndex() {
 
   loading = true;
 
-  const response = await fetch("data/wordShape.txt");
+  const response = await fetch("data/wordshape.txt");
 
   if (!response.ok) {
     console.log(response);
