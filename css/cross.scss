@@ -1,0 +1,178 @@
+$mq-small: 26em;
+$mq-medium: 35em;
+$mq-large: 56em;
+
+@mixin mq($min-width) {
+  @media screen and (min-width: $min-width) {
+    & {
+      @content;
+    }
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --box-size: 20px;
+  font-size: 12px;
+
+  @include mq($mq-medium) {
+    --box-size: 36px;
+    font-size: 16px;
+  }
+
+  @include mq($mq-large) {
+    --box-size: 44px;
+    font-size: 18px;
+  }
+}
+
+body {
+  font-family: Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding-top: 70px;
+  height: 100vh;
+}
+
+section {
+  margin: 0 auto;
+  max-width: $mq-small;
+
+  @include mq($mq-medium) {
+    max-width: $mq-medium;
+  }
+}
+
+.board {
+  --board-size: 15;
+
+  display: flex;
+  flex-wrap: wrap;
+  width: calc((var(--box-size) * var(--board-size)) + 1px);
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  margin: 0 auto;
+}
+
+.word-warning {
+  color: red;
+  &.down {
+    box-shadow: inset 2px 0 2px red;
+    &.across {
+      box-shadow: inset 2px 2px 2px red;
+    }
+  }
+  &.across {
+    box-shadow: inset 0 2px 2px red;
+  }
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  place-content: center;
+  pointer-events: all;
+
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  width: var(--box-size);
+  height: var(--box-size);
+  background-color: white;
+
+  .number {
+    position: absolute;
+    font-size: 0.5em;
+    margin-left: 0.1em;
+  }
+
+  &[data-shape="1"] {
+    border: 2px inset lawngreen;
+  }
+
+  &[data-shape="0"] {
+    border: 2px inset yellow;
+  }
+
+  &[data-across]:before {
+    content: attr(data-across);
+    font-size: 0.6em;
+  }
+
+  &[data-down]:after {
+    content: attr(data-down);
+    font-size: 0.6em;
+  }
+
+  &[data-letter]:before {
+    content: attr(data-letter);
+    font-variant: small-caps;
+    font-size: calc(var(--box-size) / 1.8);
+  }
+
+  &.no-solution:before {
+    content: "X";
+    color: red;
+    font-weight: bold;
+  }
+
+  // NOTE: Background colors -- order is important!
+
+  &.warning {
+    background-color: rgba(yellow, 0.3);
+  }
+
+  &.active {
+    background-color: lightblue;
+  }
+
+  &.error {
+    background-color: rgba(red, 0.2);
+  }
+
+  &.active-cell {
+    background-color: darken(lightblue, 20%);
+  }
+
+  &.blocked {
+    background-color: black;
+    color: black;
+
+    &::before {
+      content: "";
+    }
+
+    & .number {
+      display: none;
+    }
+  }
+}
+
+.clues {
+  margin-top: 2em;
+
+  h2 {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 0 0 0.5em;
+  }
+
+  .across {
+    margin-bottom: 1em;
+  }
+
+  span[data-score]:before {
+    content: "[" attr(data-score) "]";
+    font-size: 0.8em;
+  }
+
+  @include mq($mq-medium) {
+    columns: 2;
+  }
+}
+
+.total {
+  font-size: 0.8rem;
+  line-height: 0.8;
+}

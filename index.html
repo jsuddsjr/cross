@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crossword Generator</title>
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <!-- Optional theme -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+      integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+      integrity="sha384-tKLJeE1ALTUwtXlaGjJYM3sejfssWdAaWR2s97axw4xkiAdMzQjtOjgcyw0Y50KU"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="css/dist/cross.css" />
+    <link rel="stylesheet" href="css/dist/modal.css" />
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand">Crossword Generator</div>
+        </div>
+        <div class="navbar-collapse">
+          <form class="navbar-form navbar-right" id="save-form">
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control" placeholder="Save your work" id="name" required />
+              <div class="input-group-append input-group-btn">
+                <button class="btn btn-outline-primary js-save-btn" title="Save">
+                  <i class="bi-save" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="navbar-btn navbar-right">
+            <button class="btn btn-sm btn-outline-secondary js-clear-btn" title="Clear">
+              <i class="bi-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section>
+      <div class="board"></div>
+      <section class="clues">
+        <h2>Across</h2>
+        <ol id="across"></ol>
+        <h2>Down</h2>
+        <ol id="down"></ol>
+      </section>
+      <p class="total">Total: <span class="count"></span></p>
+    </section>
+
+    <div id="modalBackground">
+      <div id="modal">
+        <div class="modal-title">
+          <h3>Modal Title</h3>
+          <button id="close" class="close" title="Close"></button>
+        </div>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+      integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="js/cross.js" type="module"></script>
+  </body>
+</html>
