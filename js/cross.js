@@ -12,7 +12,7 @@ const across = document.getElementById("across");
 const down = document.getElementById("down");
 const count = document.querySelector("span.count");
 const saveBtn = document.querySelector(".js-save-btn");
-const clearBtn = document.querySelector(".js-clear-btn");
+const clearBtn = document.querySelector(".js-reset-board");
 
 if (
   board instanceof HTMLElement &&

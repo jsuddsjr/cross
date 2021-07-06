@@ -13,7 +13,6 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-
     <!-- Bootstrap icons -->
     <link
       rel="stylesheet"
@@ -26,42 +25,57 @@
     <link rel="stylesheet" href="css/modal.css" />
   </head>
   <body>
-    <div class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark">
-      <div class="navbar-brand">Crossword Generator</div>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarTools"
-        aria-controls="navbarTools"
-        aria-expanded="true"
-        aria-label="Open toolbar"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-gradient">
+      <div class="container-fluid">
+        <div class="navbar-header"></div>
+        <div class="navbar-brand mr-auto">Crossword Generator</div>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarTools"
+          aria-controls="navbarTools"
+          aria-expanded="false"
+          aria-label="Open toolbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarTools">
-        <ul class="navbar-nav navbar-right">
-          <li class="nav-item">
-            <form class="navbar-form" id="save-form">
-              <div class="input-group input-group-sm mb-3">
-                <input type="text" class="form-control" placeholder="Save your work" id="name" required />
-                <div class="input-group-append input-group-btn">
-                  <button class="btn btn-outline-primary js-save-btn" title="Save">
-                    <i class="bi-save" aria-hidden="true"></i>
-                  </button>
-                </div>
+        <div class="collapse navbar-collapse" id="navbarTools">
+          <form class="form-inline m-auto my-lg-0" id="save-form">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="Save your work" id="name" required />
+              <div class="input-group-append input-group-btn">
+                <button type="button" class="btn btn-outline-light js-save-btn" title="Save">
+                  <i class="bi-save" aria-hidden="true"></i>
+                </button>
               </div>
-            </form>
-          </li>
-          <li class="navbar-item">
-            <button class="btn btn-sm btn-outline-secondary js-clear-btn" title="Clear">
-              <i class="bi-trash" aria-hidden="true"></i>
-            </button>
-          </li>
-        </ul>
+            </div>
+          </form>
+          <ul class="navbar-nav">
+            <li class="navbar-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi-trash" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><button type="button" class="dropdown-item js-clear-word">Clear current word</button></li>
+                <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><button type="button" class="dropdown-item js-reset-board">Reset board</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
+
     <section>
       <div class="board"></div>
       <section class="clues">
@@ -73,24 +87,27 @@
       <p class="total">Total: <span class="count"></span></p>
     </section>
 
-    <div id="modalBackground">
-      <div id="modal">
-        <div class="modal-title">
-          <h3>Modal Title</h3>
-          <button id="close" class="close" title="Close"></button>
+    <div id="modalBackground" class="modal" tabindex="0" role="dialog">
+      <div id="modal" class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title">
+              <h3>Modal Title</h3>
+              <button type="button" id="close" class="close" title="Close"></button>
+            </div>
+          </div>
+          <div class="modal-body"></div>
         </div>
-        <div class="modal-body"></div>
       </div>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jQuery, just in case... -->
     <script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
-      integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
       crossorigin="anonymous"
     ></script>
 
-    <!-- Latest compiled and minified JavaScript -->
     <!-- JavaScript Bundle with Popper -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

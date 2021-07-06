@@ -63,7 +63,7 @@ export default class BoardView {
   }
 
   load(name) {
-    const data = this.store.loadBoard(name) || this.store.lastSaved;
+    const data = this.store.loadBoard(name);
     if (data) {
       this.setSize(Math.trunc(Math.sqrt(data.cells.length)));
       this.cells = this.store.cellsFromBoard(data);
@@ -88,11 +88,11 @@ export default class BoardView {
     this.cells.forEach((cell, index) => {
       this.boardElement.appendChild(cell.cellElement);
       cell.setPartnerCell(this.cells[boardCount - index - 1]);
-      cell.onBlocked((_) => {
+      cell.onBlocked(() => {
         this.store.writeTempData(this.cells);
         this.renumber();
       });
-      cell.onContentUpdated((_) => {
+      cell.onContentUpdated(() => {
         this.store.writeTempData(this.cells);
         this.reportWordIssues();
       });

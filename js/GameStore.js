@@ -3,6 +3,15 @@ import ShapeModel from "./ShapeModel.js";
 
 const PREFIX = "xw_";
 const LAST_SAVED = "xw-in-progress";
+const TEMPLATES_KEY = "xw-templates";
+
+const TEMPLATES_DEFAULT = [
+  ".....#.....#........#.....#..............#......#......#........#....#..........#...............#....#...###....#....###...#....#...............#..........#....#........#......#......#..............#.....#........#.....#.....",
+  ".....#.....#........#.....#..............#......#....#.............#.......###.................##....#.......#.....#.......#....##.................###.......#.............#....#......#..............#.....#........#.....#.....",
+  ".......##.............#..............#............#.....#.......##....#.........#...#...........#........###.........###........#...........#...#.........#....##.......#.....#............#..............#.............##.......",
+  "...#.....#........#.....#........#...............#.....#...........##...#####..................##....#.......#.....#.......#....##..................#####...##...........#.....#...............#........#.....#........#.....#...",
+  ".....#.....#........#.....#........#.............#...#.........#.....#...........#...#....#...........#####...........#####...........#....#...#...........#.....#.........#...#.............#........#.....#........#.....#.....",
+];
 
 /**
  * @typedef {Object} GameData
@@ -14,27 +23,33 @@ const LAST_SAVED = "xw-in-progress";
 export default class GameStore {
   constructor() {
     this.isUnsaved = false;
-    this.keys = Object.keys(localStorage).filter((key) => key.startsWith(PREFIX));
+    this._templates = readFromStorage(TEMPLATES_KEY) || TEMPLATES_DEFAULT;
     this._lastSaved = readFromStorage(LAST_SAVED) || {
       id: LAST_SAVED,
       name: "",
-      cells: "",
+      cells: this._templates[0],
     };
   }
 
+  /**
+   * Read all boards from storage.
+   */
   get boards() {
-    return this.keys.map((k) => readFromStorage(k));
+    return Object.keys(localStorage)
+      .filter((key) => key.startsWith(PREFIX))
+      .map((k) => readFromStorage(k));
   }
 
+  /**
+   * The last saved temporary board.
+   */
   get lastSaved() {
-    if (this._lastSaved.cells) {
-      return this._lastSaved;
-    }
+    return this._lastSaved;
   }
 
   /**
    * Write updates to the board.
-   * TODO: Save entire board, not just cells.
+   * TODO: Save clues, not just cells.
    * @param {CellModel[]} cells
    * @param {String} name
    */
@@ -46,7 +61,39 @@ export default class GameStore {
       cells: boardFromCells(cells),
     };
     writeToStorage(id, board);
+    this._lastSaved = board;
     this.isUnsaved = false;
+  }
+
+  /**
+   * Save current board as a template.
+   * @param {CellModel[]} cells
+   */
+  saveTemplate(cells) {
+    const template = cells.map((c) => (c.isBlocked ? ShapeModel.blockedType : ShapeModel.anyType));
+    this._templates.push(template);
+    writeToStorage(TEMPLATES_KEY, this._templates);
+  }
+
+  /**
+   * Delete board from storage.
+   * @param {String} name
+   */
+  deleteBoard(name) {
+    localStorage.removeItem(keyFromName(name));
+  }
+
+  /**
+   * Save board under a different key.
+   * @param {String} name
+   * @param {String} newName
+   */
+  renameBoard(name, newName) {
+    const board = readFromStorage(keyFromName(name));
+    if (board) {
+      writeToStorage(keyFromName(newName), board);
+      this.deleteBoard(name);
+    }
   }
 
   /**
@@ -55,7 +102,15 @@ export default class GameStore {
    * @returns Board data, if found.
    */
   loadBoard(name) {
-    if (name) return readFromStorage(keyFromName(name));
+    if (name) {
+      if (name.startsWith("template")) {
+        const index = parseInt(name.substring(8)) || 0;
+        if (index >= 0 && index < TEMPLATES_DEFAULT.length) {
+          this._lastSaved.cells = TEMPLATES_DEFAULT[index];
+        }
+      }
+      return readFromStorage(keyFromName(name)) || this._lastSaved;
+    }
   }
 
   /**
