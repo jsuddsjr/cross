@@ -79,6 +79,13 @@ export default class BoardView {
     this.show();
   }
 
+  clearGrid() {
+    this.cells.forEach((c) => {
+      c.shape.setContent();
+      c.clearAllStates();
+    });
+  }
+
   /**
    * Draw a new board.
    */

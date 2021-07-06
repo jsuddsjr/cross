@@ -93,8 +93,16 @@ export default class CellModel {
    * Reset this cell to unassigned state.
    */
   clearAllStates() {
-    this.cellElement.classList.remove(WordModel.ACTIVE_CELL_CLASS, WordModel.ACTIVE_CLASS);
-    this.across = this.down = this.activeWord = null;
+    this.cellElement.classList.remove(
+      WordModel.ACTIVE_CELL_CLASS,
+      WordModel.ACTIVE_CLASS,
+      WordModel.WORD_WARNING_CLASS,
+      "down",
+      "across"
+    );
+    this.cellElement.removeAttribute("data-down");
+    this.cellElement.removeAttribute("data-across");
+    this.activeWord = null;
   }
 
   /**

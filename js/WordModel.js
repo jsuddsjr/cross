@@ -64,6 +64,10 @@ export default class WordModel {
     // if (this.checkShape()) this.setState(WORD_WARNING_CLASS);
   }
 
+  static get activeWord() {
+    return activeWord;
+  }
+
   static get ERROR_CLASS() {
     return ERROR_CLASS;
   }
@@ -85,11 +89,13 @@ export default class WordModel {
    */
   asObject() {
     return {
+      clue: "",
       number: this.getClueNumber(),
       direction: this.direction,
       answer: this.getWord(),
       shape: this.getShape(),
       length: this.cells.length,
+      points: this.getScrabbleValue(),
     };
   }
 
@@ -153,6 +159,12 @@ export default class WordModel {
     return this.cells.map((c) => c.shape.getShape()).join("");
   }
 
+  clearWord() {
+    this.cells.forEach((c) => {
+      c.shape.setContent();
+      c.clearAllStates();
+    });
+  }
   /**
    * Reset the state in all cells.
    */
