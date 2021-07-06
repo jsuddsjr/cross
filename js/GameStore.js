@@ -105,8 +105,8 @@ export default class GameStore {
     if (name) {
       if (name.startsWith("template")) {
         const index = parseInt(name.substring(8)) || 0;
-        if (index >= 0 && index < TEMPLATES_DEFAULT.length) {
-          this._lastSaved.cells = TEMPLATES_DEFAULT[index];
+        if (index >= 0 && index < this._templates.length) {
+          this._lastSaved.cells = this._templates[index];
         }
       }
       return readFromStorage(keyFromName(name)) || this._lastSaved;

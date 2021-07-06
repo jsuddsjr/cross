@@ -63,7 +63,7 @@ export default class BoardView {
   }
 
   load(name) {
-    const data = this.store.loadBoard(name);
+    const data = this.store.loadBoard(name) || this.store.lastSaved;
     if (data) {
       this.setSize(Math.trunc(Math.sqrt(data.cells.length)));
       this.cells = this.store.cellsFromBoard(data);

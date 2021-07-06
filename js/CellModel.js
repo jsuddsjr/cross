@@ -78,7 +78,7 @@ export default class CellModel {
           this.activeWord = this.across;
           break;
         default: {
-          if (e.key.match(/^[a-z]$/i)) {
+          if (e.key.match(/^[01a-z]$/i)) {
             this.shape.setContent(e.key.toLowerCase());
             this.subscribers.notify(CONTENT_EVENT);
           } else return;
