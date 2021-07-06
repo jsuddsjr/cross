@@ -1,5 +1,8 @@
 {
   "type": "module",
+  "version": "1.0",
+  "homepage": "index.html",
+  "license": "MIT",
   "jest": {
     "testEnvironment": "jsdom",
     "transform": {},
@@ -7,17 +10,6 @@
     "coverageReporters": [
       "lcov",
       "text"
-    ]
-  },
-  "rules": {
-    "no-console": 0,
-    "quotes": [
-      2,
-      "single"
-    ],
-    "semi": [
-      2,
-      "always"
     ]
   },
   "scripts": {
