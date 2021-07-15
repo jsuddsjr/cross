@@ -1,12 +1,13 @@
-import Subscribers from "./Subscribers.js";
 import ShapeModel from "./ShapeModel.js";
+import Subscribers from "./Subscribers.js";
 
-/** @type {Map<string, string[]} */
+/** @type {Map<string, string[]>} */
 const index = new Map();
-/** @type {Map<number, string[]} */
+
+/** @type {Map<number, string[]>} */
 const indexSize = new Map();
 
-/** @type {Map<string, string[]} */
+/** @type {Map<string, string[]>} */
 const shapeCache = new Map();
 
 /** @type {Map<string, Array<Set<string>>} */
@@ -70,7 +71,8 @@ export default class WordIndex {
     // Change spaces into ANY type.
     // shape = shape.replace(/\s/g, ShapeModel.anyType);
 
-    if (shapeCache.has(shape)) return shapeCache.get(shape);
+    let results = shapeCache.get(shape);
+    if (results) return results;
 
     // Count the unique types in this shape.
     const types = new Set(shape);
@@ -83,16 +85,19 @@ export default class WordIndex {
       const simpleShape = shape.replace(new RegExp(ShapeModel.letterMatch, "g"), (sub) => {
         return /[aeiou]/.test(sub) ? ShapeModel.vowelType : ShapeModel.consonantType;
       });
-      return matchShapeSimple(simpleShape).filter((w) => wordMatch.test(w));
+      results = matchShapeSimple(simpleShape).filter((w) => wordMatch.test(w));
+    } else if (types.has(ShapeModel.anyType)) {
+      // Multiple matches on shape.
+      results = matchShapeSimple(shape);
+    } else {
+      // No ambiguity. Just VOWEL and CONSONANT.
+      results = index.get(shape) || [];
     }
 
-    // Multiple matches on shape.
-    if (types.has(ShapeModel.anyType)) {
-      return matchShapeSimple(shape);
-    }
+    // Save results for next time.
+    shapeCache.set(shape, results);
 
-    // No ambiguity. Just VOWEL and CONSONANT.
-    return index.get(shape) || [];
+    return results;
   }
 
   /**
@@ -139,7 +144,7 @@ async function loadIndex() {
 
   const text = await response.text();
 
-  for (let line of text.split(/\r?\n/g)) {
+  for (const line of text.split(/\r?\n/g)) {
     const [key, ...words] = line.split(",");
     index.set(key, words);
 
