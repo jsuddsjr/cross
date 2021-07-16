@@ -96,12 +96,12 @@ export default class BoardView {
       this.boardElement.appendChild(cell.cellElement);
       cell.setPartnerCell(this.cells[boardCount - index - 1]);
       cell.onBlocked(() => {
-        this.store.writeTempData(this.cells);
         this.renumber();
+        this.store.writeTempData(this.cells);
       });
       cell.onContentUpdated(() => {
-        this.store.writeTempData(this.cells);
         this.reportWordIssues();
+        this.store.writeTempData(this.cells);
       });
     });
 

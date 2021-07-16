@@ -125,15 +125,26 @@ export default class CellModel {
   }
 
   /**
-   * @param {Boolean} [value]
+   * Toggle this cell and partner cell's blocked state.
+   * @param {Boolean} [state] Optional new state
    */
-  toggleBlocked(value) {
-    if (value === undefined || this.isBlocked !== value) {
-      this.isBlocked = !this.isBlocked;
-      this.cellElement.classList.toggle("blocked");
-      this.cellElement.classList.remove("active-cell");
-      if (this.partnerCell) this.partnerCell.toggleBlocked(this.isBlocked);
-      this.shape.setContent(this.isBlocked ? ShapeModel.blockedType : ShapeModel.anyType);
+  toggleBlocked(state) {
+    if (state === undefined || this.isBlocked !== state) {
+      const newState = !this.isBlocked;
+      [this, this.partnerCell].forEach((c) => {
+        if (c) {
+          c.isBlocked = newState;
+          if (c.isBlocked) {
+            c.cellElement.classList.add("blocked");
+            c.cellElement.classList.remove("active-cell");
+            c.shape.setContent(ShapeModel.blockedType);
+          } else {
+            c.cellElement.classList.remove("blocked");
+            c.cellElement.classList.add("active-cell");
+            c.shape.setContent(ShapeModel.anyType);
+          }
+        }
+      });
     }
   }
 
@@ -158,6 +169,10 @@ export default class CellModel {
   }
 }
 
+/**
+ * Private event handler.
+ * @param {Event} e
+ */
 function clickHandler(e) {
   if (e.ctrlKey) {
     this.toggleBlocked();
@@ -168,7 +183,13 @@ function clickHandler(e) {
   }
 }
 
+/**
+ * Private event handler.
+ * @param {Event} e
+ * @returns {Void}
+ */
 function keyHandler(e) {
+  // Don't block keyboard shortcuts.
   if (e.ctrlKey || e.altKey) return;
 
   /** @type {1|-1} */

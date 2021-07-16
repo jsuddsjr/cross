@@ -1,4 +1,3 @@
-import CellModel from "./CellModel.js";
 import Subscribers from "./Subscribers.js";
 
 const UPDATED_EVENT = "updated";
@@ -57,7 +56,7 @@ export default class WordModel {
 
     this.cells.forEach((c, i) => {
       c.setWord(this, direction, i);
-      c.onContentUpdated((_) => this.subscribers.notify(UPDATED_EVENT));
+      c.onContentUpdated(() => this.subscribers.notify(UPDATED_EVENT));
     });
 
     // this.setWord(this.randomWord());
