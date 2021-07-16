@@ -180,31 +180,30 @@ export default class BoardView {
         w.addStates(WordModel.WARNING_CLASS);
       }
 
+      if (w.isEmpty()) {
+        continue;
+      }
+
       const word = w;
       const wordShape = word.getShape();
 
-      this.index.getWordsByShape(wordShape).then((wordsFound) => {
-        if (wordsFound.length === 0) {
+      this.index.getPotentialsByShape(wordShape).then((potentials) => {
+        if (potentials.length === 0) {
           word.addStates(WordModel.WORD_WARNING_CLASS, word.direction);
         } else {
-          this.index.getPotentialsByShape(wordShape).then((potentials) => {
-            const cells = word.cells;
-            const dir = word.direction;
-            potentials.forEach((set, index) => {
-              const cell = cells[index];
-              cell.cellElement.removeAttribute(`data-${dir}`);
-              if (set.size > 0) {
-                cell.cellElement.classList.remove("no-solution");
-                if (set.size > 1 && set.size < 7) {
-                  cell.cellElement.dataset[dir] = [...set.keys()].sort().join("");
-                } else if (set.size === 1) {
-                  const c = [...set.values()][0];
-                  cell.shape.setContent(c);
-                }
-              } else {
-                cell.cellElement.classList.add("no-solution");
+          const cells = word.cells;
+          const dir = word.direction;
+          potentials.forEach((set, index) => {
+            const cell = cells[index];
+            cell.cellElement.removeAttribute(`data-${dir}`);
+            if (set.size > 0) {
+              if (set.size > 1 && set.size < 7) {
+                cell.cellElement.dataset[dir] = [...set.keys()].sort().join("");
+              } else if (set.size === 1) {
+                const c = [...set.values()][0];
+                cell.shape.setContent(c);
               }
-            });
+            }
           });
         }
       });

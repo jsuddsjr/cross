@@ -29,64 +29,8 @@ export default class CellModel {
     this.numberElement = null;
     this.subscribers = new Subscribers(this);
 
-    this.cellElement.addEventListener("click", (e) => {
-      if (e.ctrlKey) {
-        this.toggleBlocked();
-        this.subscribers.notify(BLOCKED_EVENT);
-      } else {
-        this.activeWord = this.activeWord ? (this.activeWord === this.across ? this.down : this.across) : this.across;
-        if (this.activeWord) this.activeWord.setActiveWord(this);
-      }
-    });
-
-    this.cellElement.addEventListener("keydown", (e) => {
-      if (e.ctrlKey || e.altKey) return;
-
-      /** @type {1|-1} */
-      let direction = 1;
-
-      if (!this.activeWord) this.activeWord = this.across;
-
-      switch (e.key) {
-        case " ":
-          e.preventDefault();
-          if (this.isBlocked || this.shape.getLetter() === " ") {
-            this.toggleBlocked();
-            this.subscribers.notify(BLOCKED_EVENT);
-          } else {
-            this.shape.setContent(" ");
-            this.subscribers.notify(CONTENT_EVENT);
-          }
-          break;
-        case "Backspace":
-          this.shape.setContent();
-          this.subscribers.notify(CONTENT_EVENT);
-          direction = -1;
-          break;
-        case "ArrowDown":
-          this.activeWord = this.down;
-          break;
-        case "ArrowUp":
-          this.activeWord = this.down;
-          direction = -1;
-          break;
-        case "ArrowLeft":
-          this.activeWord = this.across;
-          direction = -1;
-          break;
-        case "ArrowRight":
-          this.activeWord = this.across;
-          break;
-        default: {
-          if (e.key.match(/^[01a-z]$/i)) {
-            this.shape.setContent(e.key.toLowerCase());
-            this.subscribers.notify(CONTENT_EVENT);
-          } else return;
-        }
-      }
-
-      if (this.activeWord) this.activeWord.setActiveWord(this, direction);
-    });
+    this.cellElement.addEventListener("click", clickHandler.bind(this));
+    this.cellElement.addEventListener("keydown", keyHandler.bind(this));
   }
 
   /**
@@ -103,6 +47,13 @@ export default class CellModel {
     this.cellElement.removeAttribute("data-down");
     this.cellElement.removeAttribute("data-across");
     this.activeWord = null;
+  }
+
+  /**
+   * @returns True if cell is empty.
+   */
+  isEmpty() {
+    return this.shape.getShape() === ShapeModel.anyType;
   }
 
   /**
@@ -205,4 +156,63 @@ export default class CellModel {
     this.subscribers.subscribe(CONTENT_EVENT, cb);
     return this;
   }
+}
+
+function clickHandler(e) {
+  if (e.ctrlKey) {
+    this.toggleBlocked();
+    this.subscribers.notify(BLOCKED_EVENT);
+  } else {
+    this.activeWord = this.activeWord ? (this.activeWord === this.across ? this.down : this.across) : this.across;
+    if (this.activeWord) this.activeWord.setActiveWord(this);
+  }
+}
+
+function keyHandler(e) {
+  if (e.ctrlKey || e.altKey) return;
+
+  /** @type {1|-1} */
+  let direction = 1;
+
+  if (!this.activeWord) this.activeWord = this.across;
+
+  switch (e.key) {
+    case " ":
+      e.preventDefault();
+      if (this.isBlocked || this.shape.getLetter() === " ") {
+        this.toggleBlocked();
+        this.subscribers.notify(BLOCKED_EVENT);
+      } else {
+        this.shape.setContent(" ");
+        this.subscribers.notify(CONTENT_EVENT);
+      }
+      break;
+    case "Backspace":
+      this.shape.setContent();
+      this.subscribers.notify(CONTENT_EVENT);
+      direction = -1;
+      break;
+    case "ArrowDown":
+      this.activeWord = this.down;
+      break;
+    case "ArrowUp":
+      this.activeWord = this.down;
+      direction = -1;
+      break;
+    case "ArrowLeft":
+      this.activeWord = this.across;
+      direction = -1;
+      break;
+    case "ArrowRight":
+      this.activeWord = this.across;
+      break;
+    default: {
+      if (e.key.match(/^[01a-z]$/i)) {
+        this.shape.setContent(e.key.toLowerCase());
+        this.subscribers.notify(CONTENT_EVENT);
+      } else return;
+    }
+  }
+
+  if (this.activeWord) this.activeWord.setActiveWord(this, direction);
 }

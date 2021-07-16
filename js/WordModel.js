@@ -113,7 +113,15 @@ export default class WordModel {
   }
 
   /**
-   *
+   * @returns True if every cell is empty.
+   */
+  isEmpty() {
+    return this.cells.every((c) => c.isEmpty());
+  }
+
+  /**
+   * Highlight active word and cell. If word is already active, then
+   * advance the cell with focus in the specified direction.
    * @param {CellModel} activeCell
    * @param {1|0|-1} direction
    */

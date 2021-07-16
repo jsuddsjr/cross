@@ -112,12 +112,6 @@ section {
     font-size: calc(var(--box-size) / 1.8);
   }
 
-  &.no-solution:before {
-    content: "X";
-    color: red;
-    font-weight: bold;
-  }
-
   // NOTE: Background colors -- order is important!
 
   &.warning {
