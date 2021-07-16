@@ -2,7 +2,7 @@ const VOWEL = "0";
 const CONSONANT = "1";
 const ANY_TYPE = ".";
 const BLOCKED = "#";
-const SHAPE_MATCH = new RegExp(`[${BLOCKED}${VOWEL}${CONSONANT}${ANY_TYPE}]`);
+const SHAPE_MATCH = new RegExp(`[${BLOCKED}${VOWEL}${CONSONANT}${ANY_TYPE}]`, 'g');
 const LETTER_MATCH = /[a-z]/i;
 
 /**

@@ -30,7 +30,7 @@ export default class BoardView {
       this.reportWordIssues();
     });
 
-    this.index = new WordIndex().onLoaded(this.reportWordIssues.bind(this));
+    this.index = new WordIndex();
     this.subscribers = new Subscribers(this);
     this.store = new GameStore();
   }
@@ -170,42 +170,44 @@ export default class BoardView {
    */
   reportWordIssues() {
     this.wordList.forEach((w) => w.clearAllStates());
-    for (let word of this.wordList) {
-      if (word.length < 3) {
-        word.addStates(WordModel.ERROR_CLASS);
+    for (let w of this.wordList) {
+      if (w.length < 3) {
+        w.addStates(WordModel.ERROR_CLASS);
         continue;
       }
 
-      if (word.length > 10) {
-        word.addStates(WordModel.WARNING_CLASS);
+      if (w.length > 10) {
+        w.addStates(WordModel.WARNING_CLASS);
       }
 
-      if (this.index.isLoaded()) {
-        const wordShape = word.getShape();
-        const wordsFound = this.index.getWordsByShape(wordShape);
+      const word = w;
+      const wordShape = word.getShape();
+
+      this.index.getWordsByShape(wordShape).then((wordsFound) => {
         if (wordsFound.length === 0) {
           word.addStates(WordModel.WORD_WARNING_CLASS, word.direction);
         } else {
-          const potentials = this.index.getPotentialsByShape(wordShape);
-          const cells = word.cells;
-          const dir = word.direction;
-          potentials.forEach((set, index) => {
-            const cell = cells[index];
-            cell.cellElement.removeAttribute(`data-${dir}`);
-            if (set.size > 0) {
-              cell.cellElement.classList.remove("no-solution");
-              if (set.size > 1 && set.size < 7) {
-                cell.cellElement.dataset[dir] = [...set.keys()].sort().join("");
-              } else if (set.size === 1) {
-                const c = [...set.values()][0];
-                cell.shape.setContent(c);
+          this.index.getPotentialsByShape(wordShape).then((potentials) => {
+            const cells = word.cells;
+            const dir = word.direction;
+            potentials.forEach((set, index) => {
+              const cell = cells[index];
+              cell.cellElement.removeAttribute(`data-${dir}`);
+              if (set.size > 0) {
+                cell.cellElement.classList.remove("no-solution");
+                if (set.size > 1 && set.size < 7) {
+                  cell.cellElement.dataset[dir] = [...set.keys()].sort().join("");
+                } else if (set.size === 1) {
+                  const c = [...set.values()][0];
+                  cell.shape.setContent(c);
+                }
+              } else {
+                cell.cellElement.classList.add("no-solution");
               }
-            } else {
-              cell.cellElement.classList.add("no-solution");
-            }
+            });
           });
         }
-      }
+      });
     }
   }
 
