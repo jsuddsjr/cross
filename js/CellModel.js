@@ -192,7 +192,7 @@ function keyHandler(e) {
   // Don't block keyboard shortcuts.
   if (e.ctrlKey || e.altKey) return;
 
-  /** @type {1|-1} */
+  /** @type {1|0|-1} */
   let direction = 1;
 
   if (!this.activeWord) this.activeWord = this.across;
@@ -209,9 +209,10 @@ function keyHandler(e) {
       }
       break;
     case "Backspace":
+    case "Delete":
       this.shape.setContent();
       this.subscribers.notify(CONTENT_EVENT);
-      direction = -1;
+      direction = e.key === "Backspace" ? -1 : 0;
       break;
     case "ArrowDown":
       this.activeWord = this.down;

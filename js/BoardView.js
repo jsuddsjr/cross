@@ -170,43 +170,55 @@ export default class BoardView {
    */
   reportWordIssues() {
     this.wordList.forEach((w) => w.clearAllStates());
-    for (let w of this.wordList) {
-      if (w.length < 3) {
-        w.addStates(WordModel.ERROR_CLASS);
-        continue;
-      }
 
-      if (w.length > 10) {
-        w.addStates(WordModel.WARNING_CLASS);
-      }
-
-      if (w.isEmpty()) {
-        continue;
-      }
-
-      const word = w;
-      const wordShape = word.getShape();
-
-      this.index.getPotentialsByShape(wordShape).then((potentials) => {
-        if (potentials.length === 0) {
-          word.addStates(WordModel.WORD_WARNING_CLASS, word.direction);
-        } else {
-          const cells = word.cells;
-          const dir = word.direction;
-          potentials.forEach((set, index) => {
-            const cell = cells[index];
-            cell.cellElement.removeAttribute(`data-${dir}`);
-            if (set.size > 0) {
-              if (set.size > 1 && set.size < 7) {
-                cell.cellElement.dataset[dir] = [...set.keys()].sort().join("");
-              } else if (set.size === 1) {
-                const c = [...set.values()][0];
-                cell.shape.setContent(c);
-              }
-            }
-          });
+    let contentUpdated = true;
+    while (contentUpdated) {
+      contentUpdated = false;
+      for (let w of this.wordList) {
+        if (w.length < 3) {
+          w.addStates(WordModel.ERROR_CLASS);
+          continue;
         }
-      });
+
+        if (w.length > 10) {
+          w.addStates(WordModel.WARNING_CLASS);
+        }
+
+        if (w.isEmpty()) {
+          continue;
+        }
+
+        const word = w;
+        const wordShape = word.getShape();
+
+        this.index.getPotentialsByShape(wordShape).then((potentials) => {
+          if (potentials.length === 0 || potentials[0].size === 0) {
+            word.addStates(WordModel.WORD_WARNING_CLASS, word.direction);
+          } else {
+            const cells = word.cells;
+            const dir = word.direction;
+            potentials.forEach((map, index) => {
+              const cell = cells[index];
+              cell.cellElement.removeAttribute(`data-${dir}`);
+              if (map.size === 1) {
+                const c = [...map.keys()][0];
+                cell.shape.setContent(c);
+                contentUpdated = true;
+              } else if (map.size > 1 && map.size < 7) {
+                cell.cellElement.dataset[dir] = [...map.keys()].sort().join("");
+              } else {
+                // Filter by highest used options.
+                const best = [...map.entries()]
+                  .filter((a) => a[1] >= 0.16)
+                  .map((a) => a[0])
+                  .sort()
+                  .join("");
+                if (best) cell.cellElement.dataset[dir] = best;
+              }
+            });
+          }
+        });
+      }
     }
   }
 

@@ -1,12 +1,12 @@
 /** @type {Map<string, Promise<string[]>>} */
 const shapeCache = new Map();
 
-/** @type {Map<string, Promise<Array<Set<string>>>} */
+/** @type {Map<string, Promise<Map<string, number>[]>>} */
 const potentialCache = new Map();
 
 export default class WordIndex {
   constructor() {
-    this.baseUrl = "https://cross-api-webapp.azurewebsites.net/api";
+    this.baseUrl = "http://localhost:3000/api"; // "https://cross-api-webapp.azurewebsites.net/api";
     this.apiKey = "ySY24UEoGh820gYU4gVi";
   }
 
@@ -20,9 +20,13 @@ export default class WordIndex {
     if (cachedPromise) return cachedPromise;
 
     const url = `${this.baseUrl}/p/${shape}?key=${this.apiKey}`;
-    const promise = fetchData(url).then((data) => data.map((a) => new Set(a)));
-    potentialCache.set(shape, promise);
 
+    /** @type {Promise<Map<string, number>[]>} */
+    const promise = fetchData(url).then((data) => {
+      console.log(data);
+      return data.map((a) => new Map(a));
+    });
+    potentialCache.set(shape, promise);
     return promise;
   }
 
@@ -37,9 +41,10 @@ export default class WordIndex {
     if (cachedPromise) return cachedPromise;
 
     const url = `${this.baseUrl}/s/${shape}?key=${this.apiKey}`;
+
+    /** @type {Promise<string[]>} */
     const promise = fetchData(url);
     shapeCache.set(shape, promise);
-
     return promise;
   }
 }

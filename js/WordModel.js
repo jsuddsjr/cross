@@ -10,6 +10,7 @@ const WORD_WARNING_CLASS = "word-warning";
 const ALL_STATES = [ACTIVE_CELL_CLASS, ERROR_CLASS, WARNING_CLASS, WORD_WARNING_CLASS, "down", "across"];
 
 const scrabblePoints = new Map([
+  ["_", 0],
   [" ", 0],
   ["a", 1],
   ["b", 3],
@@ -44,7 +45,7 @@ let activeWord = null;
 
 export default class WordModel {
   /**
-   * @param {CellModel[]} cells
+   * @param {import("./CellModel.js").default[]} cells
    * @param {String} direction
    */
   constructor(cells, direction = "across") {
