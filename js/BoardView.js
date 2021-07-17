@@ -86,6 +86,15 @@ export default class BoardView {
     });
   }
 
+  clearErrors() {
+    this.cells
+      .filter((c) => c.cellElement.classList.contains(WordModel.WORD_WARNING_CLASS))
+      .forEach((c) => {
+        c.shape.setContent();
+        c.clearAllStates();
+      });
+  }
+
   /**
    * Draw a new board.
    */
@@ -204,16 +213,19 @@ export default class BoardView {
                 const c = [...map.keys()][0];
                 cell.shape.setContent(c);
                 contentUpdated = true;
-              } else if (map.size > 1 && map.size < 7) {
+              } else if (map.size > 1 && map.size < 6) {
                 cell.cellElement.dataset[dir] = [...map.keys()].sort().join("");
               } else {
-                // Filter by highest used options.
-                const best = [...map.entries()]
-                  .filter((a) => a[1] >= 0.16)
-                  .map((a) => a[0])
-                  .sort()
-                  .join("");
-                if (best) cell.cellElement.dataset[dir] = best;
+                // Filter by most probable options.
+                const best =
+                  [...map.entries()].filter((a) => a[1] > 0.16) ||
+                  [...map.entries()].sort((a, b) => a[1] - b[1]).filter((a, i) => i < 5);
+
+                if (best)
+                  cell.cellElement.dataset[dir] = best
+                    .map((a) => a[0])
+                    .sort()
+                    .join("");
               }
             });
           }

@@ -15,6 +15,7 @@ const count = document.querySelector("span.count");
 const saveBtn = document.querySelector(".js-save-btn");
 const clearWordBtn = document.querySelector(".js-clear-word");
 const clearGridBtn = document.querySelector(".js-clear-grid");
+const clearErrorsBtn = document.querySelector(".js-clear-errors");
 
 if (
   board instanceof HTMLElement &&
@@ -23,7 +24,8 @@ if (
   count instanceof HTMLElement &&
   saveBtn instanceof HTMLButtonElement &&
   clearWordBtn instanceof HTMLButtonElement &&
-  clearGridBtn instanceof HTMLButtonElement
+  clearGridBtn instanceof HTMLButtonElement &&
+  clearErrorsBtn instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
   const wordListView = new WordListView(boardView, across, down, count);
@@ -55,6 +57,11 @@ if (
   clearGridBtn.onclick = (e) => {
     e.preventDefault();
     boardView.clearGrid();
+  };
+
+  clearErrorsBtn.onclick = (e) => {
+    e.preventDefault();
+    boardView.clearErrors();
   };
 
   const resetModal = new ResetBoardModal("resetBoardModal");

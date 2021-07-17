@@ -6,7 +6,7 @@ const potentialCache = new Map();
 
 export default class WordIndex {
   constructor() {
-    this.baseUrl = "http://localhost:3000/api"; // "https://cross-api-webapp.azurewebsites.net/api";
+    this.baseUrl = "https://cross-api-webapp.azurewebsites.net/api"; //  "http://localhost:3000/api"; //
     this.apiKey = "ySY24UEoGh820gYU4gVi";
   }
 
