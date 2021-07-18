@@ -120,7 +120,7 @@ export default class GameStore {
     return [...board.cells].map((shape) => {
       const cell = new CellModel();
       if (shape === ShapeModel.blockedType) {
-        cell.toggleBlocked(true);
+        cell.toggleOne(true);
       } else {
         cell.shape.setContent(shape);
       }

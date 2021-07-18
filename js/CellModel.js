@@ -125,26 +125,33 @@ export default class CellModel {
   }
 
   /**
+   * Toggle blocked for a single cell.
+   * @param {Boolean} [state] Optional new state
+   */
+  toggleOne(state) {
+    if (this.isBlocked === state) return;
+
+    if (this.isBlocked) {
+      this.isBlocked = false;
+      this.cellElement.classList.remove("blocked");
+      this.cellElement.classList.add("active-cell");
+      this.shape.reset();
+    } else {
+      this.isBlocked = true;
+      this.cellElement.classList.add("blocked");
+      this.cellElement.classList.remove("active-cell");
+      this.shape.setContent(ShapeModel.blockedType);
+    }
+  }
+
+  /**
    * Toggle this cell and partner cell's blocked state.
    * @param {Boolean} [state] Optional new state
    */
   toggleBlocked(state) {
-    if (state === undefined || this.isBlocked !== state) {
-      const newState = !this.isBlocked;
-      [this, this.partnerCell].forEach((c) => {
-        if (c) {
-          c.isBlocked = newState;
-          if (c.isBlocked) {
-            c.cellElement.classList.add("blocked");
-            c.cellElement.classList.remove("active-cell");
-            c.shape.setContent(ShapeModel.blockedType);
-          } else {
-            c.cellElement.classList.remove("blocked");
-            c.cellElement.classList.add("active-cell");
-            c.shape.reset();
-          }
-        }
-      });
+    this.toggleOne(state);
+    if (this.partnerCell) {
+      this.partnerCell.toggleOne(this.isBlocked);
     }
   }
 
@@ -188,7 +195,7 @@ function clickHandler(e) {
 /**
  * Private event handler.
  * @this {CellModel}
- * @param {Event} e
+ * @param {KeyboardEvent} e
  * @returns {Void}
  */
 function keyHandler(e) {
@@ -204,7 +211,7 @@ function keyHandler(e) {
     case " ":
       e.preventDefault();
       if (this.isBlocked || this.shape.isAnyType()) {
-        this.toggleBlocked();
+        e.shiftKey ? this.toggleOne() : this.toggleBlocked();
         this.subscribers.notify(BLOCKED_EVENT);
       } else {
         this.shape.reset();

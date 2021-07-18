@@ -1,10 +1,9 @@
-import WordModel from "./WordModel.js";
-import BoardView from "./BoardView.js";
+/** @typedef {import("./WordModel.js").default} WordModel */
 
 export default class WordListView {
   /**
    * Constructor.
-   * @param {BoardView} board
+   * @param {import("./BoardView.js").default} board
    * @param {HTMLElement} acrossElement
    * @param {HTMLElement} downElement
    * @param {HTMLElement} countElement
@@ -14,6 +13,9 @@ export default class WordListView {
     this.acrossElement = acrossElement;
     this.downElement = downElement;
     this.countElement = countElement;
+
+    // DEBUG
+    this.shapeElement = document.querySelector(".shape");
 
     /** @type {WordModel[]} */
     this.across = this.down = null;
@@ -37,6 +39,7 @@ export default class WordListView {
     }
 
     this.repaint();
+    this.shapeFromBoard();
   }
 
   updateWord(word) {
@@ -47,6 +50,12 @@ export default class WordListView {
   repaint() {
     this.acrossElement.innerHTML = this.across.map((w) => this.map.get(w)).join("");
     this.downElement.innerHTML = this.down.map((w) => this.map.get(w)).join("");
+  }
+
+  shapeFromBoard() {
+    if (this.shapeElement) {
+      this.shapeElement.textContent = this.board.cells.forEach((c) => c.shape.getShape()).join("");
+    }
   }
 
   /**
