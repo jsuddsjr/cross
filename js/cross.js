@@ -16,6 +16,7 @@ const saveBtn = document.querySelector(".js-save-btn");
 const clearWordBtn = document.querySelector(".js-clear-word");
 const clearGridBtn = document.querySelector(".js-clear-grid");
 const clearErrorsBtn = document.querySelector(".js-clear-errors");
+const saveTemplateBtn = document.querySelector(".js-save-template");
 
 if (
   board instanceof HTMLElement &&
@@ -25,7 +26,8 @@ if (
   saveBtn instanceof HTMLButtonElement &&
   clearWordBtn instanceof HTMLButtonElement &&
   clearGridBtn instanceof HTMLButtonElement &&
-  clearErrorsBtn instanceof HTMLButtonElement
+  clearErrorsBtn instanceof HTMLButtonElement &&
+  saveTemplateBtn instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
   new WordListView(boardView, across, down, count);
@@ -34,6 +36,10 @@ if (
 
   boardView.onSaved(() => {
     alert(`Saved board as ${boardView.title}`);
+    const form = document.forms.namedItem("save-form");
+    /** @type {HTMLInputElement} */
+    const name = form.elements.namedItem("name");
+    name.value = boardView.title;
   });
 
   saveBtn.onclick = (e) => {
@@ -63,6 +69,11 @@ if (
   clearErrorsBtn.onclick = (e) => {
     e.preventDefault();
     boardView.clearErrors();
+  };
+
+  saveTemplateBtn.onclick = (e) => {
+    e.preventDefault();
+    boardView.saveAsTemplate();
   };
 
   const resetModal = new ResetBoardModal("resetBoardModal");

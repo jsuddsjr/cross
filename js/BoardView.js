@@ -64,6 +64,15 @@ export default class BoardView {
     this.subscribers.notify(SAVED_EVENT);
   }
 
+  saveAsTemplate() {
+    if (this.store.saveTemplate(this.cells)) {
+      this.title = `${this.size}x${this.size} template`;
+      this.subscribers.notify(SAVED_EVENT);
+    } else {
+      alert("Matching template already saved.");
+    }
+  }
+
   load(name) {
     const data = this.store.loadBoard(name) || this.store.lastSaved;
     if (data) {

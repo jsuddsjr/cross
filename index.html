@@ -27,8 +27,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-gradient">
       <div class="container-fluid">
-        <div class="navbar-header"></div>
         <div class="navbar-brand">Crossword Generator</div>
+
         <button
           class="navbar-toggler"
           type="button"
@@ -42,22 +42,34 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarTools">
-          <form class="form-inline m-auto" id="save-form">
-            <div class="input-group input-group-sm">
-              <input type="text" class="form-control" placeholder="Save your work" id="name" required />
-              <div class="input-group-append input-group-btn">
-                <button type="button" class="btn btn-outline-light js-save-btn" title="Save">
-                  <i class="bi-save" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav ms-auto">
             <li class="navbar-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
-                id="navbarDropdown"
+                id="saveMenu"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Save menu"
+              >
+                <i class="bi-save" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="saveMenu">
+                <li>
+                  <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">Save board</button>
+                </li>
+                <li><button class="dropdown-item js-save-template">Save as template</button></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul class="navbar-nav">
+            <li class="navbar-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="clearMenu"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -65,7 +77,7 @@
               >
                 <i class="bi-trash" aria-hidden="true"></i>
               </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="clearMenu">
                 <li><button type="button" class="dropdown-item js-clear-word">Clear current word</button></li>
                 <li><button type="button" class="dropdown-item js-clear-errors">Clear all errors</button></li>
                 <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
@@ -94,30 +106,53 @@
       <pre class="shape"></pre>
     </section>
 
+    <div class="modal fade" id="saveBoardAs" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="Label">Save board as</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="form-inline" id="save-form">
+              <input type="text" class="form-control" placeholder="Enter a name" id="name" required />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary js-save-btn" data-bs-dismiss="modal">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="resetBoardModal" class="modal fade" tabindex="0" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Start a new grid</h4>
-            <button type="button" class="close" data-bs-dismiss="modal" title="Close">&times;</button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="container-fluid">
               <ul class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link" href="#" data-size="5">5x5</a>
+                  <a class="nav-link" href="#" data-size="5">5x5 (Easy)</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#" data-size="7">7x7</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#" data-size="11">11x11</a>
+                  <a class="nav-link" href="#" data-size="7">9x9</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-size="11">11x11 (Beginner)</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#" data-size="13">13x13</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" href="#" data-size="15">15x15</a>
+                  <a class="nav-link active" href="#" data-size="15">15x15 (Average)</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#" data-size="17">17x17</a>
@@ -126,17 +161,22 @@
                   <a class="nav-link" href="#" data-size="19">19x19</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#" data-size="21">21x21</a>
+                  <a class="nav-link" href="#" data-size="21">21x21 (Hard)</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#" data-size="23">23x23</a>
                 </li>
               </ul>
             </div>
+            <div class="grid-preview"></div>
+            <p class="small">
+              Find more grids at
+              <a href="https://crosswordgrids.com/" target="_blank">CrosswordGrids.com</a>.
+            </p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Create</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary js-create-btn" data-bs-dismiss="modal">Create</button>
           </div>
         </div>
       </div>

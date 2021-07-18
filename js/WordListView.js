@@ -54,7 +54,7 @@ export default class WordListView {
 
   shapeFromBoard() {
     if (this.shapeElement) {
-      this.shapeElement.textContent = this.board.cells.forEach((c) => c.shape.getShape()).join("");
+      this.shapeElement.textContent = this.board.cells.map((c) => c.shape.getShape()).join("");
     }
   }
 

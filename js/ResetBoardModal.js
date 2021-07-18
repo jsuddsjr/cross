@@ -6,7 +6,7 @@ export default class ResetBoardModal {
   constructor(id) {
     this.modal = document.getElementById(id);
     this.links = [...this.modal.querySelectorAll("a")];
-    this.okButton = this.modal.querySelector(".btn-success");
+    this.okButton = this.modal.querySelector(".js-create-btn");
     this.subscribers = new Subscribers(this);
     this.selectedSize = 15;
 

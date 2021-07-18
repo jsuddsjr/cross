@@ -211,7 +211,8 @@ function keyHandler(e) {
     case " ":
       e.preventDefault();
       if (this.isBlocked || this.shape.isAnyType()) {
-        e.shiftKey ? this.toggleOne() : this.toggleBlocked();
+        if (e.shiftKey) this.toggleOne();
+        else this.toggleBlocked();
         this.subscribers.notify(BLOCKED_EVENT);
       } else {
         this.shape.reset();

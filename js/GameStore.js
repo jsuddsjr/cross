@@ -70,9 +70,12 @@ export default class GameStore {
    * @param {CellModel[]} cells
    */
   saveTemplate(cells) {
-    const template = cells.map((c) => (c.isBlocked ? ShapeModel.blockedType : ShapeModel.anyType));
+    const template = cells.map((c) => (c.isBlocked ? ShapeModel.blockedType : ShapeModel.anyType)).join("");
+    if (this._templates.includes(template)) return false;
+
     this._templates.push(template);
     writeToStorage(TEMPLATES_KEY, this._templates);
+    return true;
   }
 
   /**
