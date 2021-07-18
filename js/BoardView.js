@@ -27,7 +27,7 @@ export default class BoardView {
     this.setSize(size);
 
     this.boardElement.addEventListener("keypress", () => {
-      this.reportWordIssues();
+      this.updatePotentials();
     });
 
     this.index = new WordIndex();
@@ -84,6 +84,7 @@ export default class BoardView {
       c.shape.setContent();
       c.clearAllStates();
     });
+    this.subscribers.notify(LAYOUT_EVENT);
   }
 
   clearErrors() {
@@ -93,6 +94,8 @@ export default class BoardView {
         c.shape.setContent();
         c.clearAllStates();
       });
+    this.updatePotentials();
+    this.subscribers.notify(LAYOUT_EVENT);
   }
 
   /**
@@ -109,7 +112,7 @@ export default class BoardView {
         this.store.writeTempData(this.cells);
       });
       cell.onContentUpdated(() => {
-        this.reportWordIssues();
+        this.updatePotentials();
         this.store.writeTempData(this.cells);
       });
     });
@@ -140,7 +143,7 @@ export default class BoardView {
       }
     }
 
-    this.reportWordIssues();
+    this.updatePotentials();
     this.subscribers.notify(LAYOUT_EVENT);
   }
 
@@ -177,12 +180,18 @@ export default class BoardView {
   /**
    * Find issues with dictionary matches.
    */
-  reportWordIssues() {
+  async updatePotentials() {
     this.wordList.forEach((w) => w.clearAllStates());
 
-    let contentUpdated = true;
-    while (contentUpdated) {
-      contentUpdated = false;
+    /** @type {Boolean[]} */
+    let bools;
+
+    let maxIterations = 3;
+
+    do {
+      /** @type {Promise<boolean>[]} */
+      const promises = [];
+
       for (let w of this.wordList) {
         if (w.length < 3) {
           w.addStates(WordModel.ERROR_CLASS);
@@ -197,41 +206,12 @@ export default class BoardView {
           continue;
         }
 
-        const word = w;
-        const wordShape = word.getShape();
-
-        this.index.getPotentialsByShape(wordShape).then((potentials) => {
-          if (potentials.length === 0 || potentials[0].size === 0) {
-            word.addStates(WordModel.WORD_WARNING_CLASS, word.direction);
-          } else {
-            const cells = word.cells;
-            const dir = word.direction;
-            potentials.forEach((map, index) => {
-              const cell = cells[index];
-              cell.cellElement.removeAttribute(`data-${dir}`);
-              if (map.size === 1) {
-                const c = [...map.keys()][0];
-                cell.shape.setContent(c);
-                contentUpdated = true;
-              } else if (map.size > 1 && map.size < 6) {
-                cell.cellElement.dataset[dir] = [...map.keys()].sort().join("");
-              } else {
-                // Filter by most probable options.
-                const best =
-                  [...map.entries()].filter((a) => a[1] > 0.16) ||
-                  [...map.entries()].sort((a, b) => a[1] - b[1]).filter((a, i) => i < 5);
-
-                if (best)
-                  cell.cellElement.dataset[dir] = best
-                    .map((a) => a[0])
-                    .sort()
-                    .join("");
-              }
-            });
-          }
-        });
+        const action = this.index.getPotentialsByShape(w.getShape()).then(processPotentials.bind(w));
+        promises.push(action);
       }
-    }
+
+      bools = await Promise.all(promises);
+    } while (--maxIterations && bools.length && bools.some((b) => b));
   }
 
   /**
@@ -253,4 +233,37 @@ export default class BoardView {
     this.subscribers.subscribe(SAVED_EVENT, callback);
     return this;
   }
+}
+
+async function processPotentials(potentials) {
+  let contentUpdated = false;
+  if (potentials.length === 0 || potentials[0].size === 0) {
+    this.addStates(WordModel.WORD_WARNING_CLASS, this.direction);
+  } else {
+    const cells = this.cells;
+    const dir = this.direction;
+    potentials.forEach((map, index) => {
+      const cell = cells[index];
+      cell.cellElement.removeAttribute(`data-${dir}`);
+      if (map.size === 1) {
+        const c = [...map.keys()][0];
+        if (cell.shape.getShape() !== c) {
+          cell.shape.setContent(c);
+          contentUpdated = true;
+        }
+      } else {
+        // Filter by most probable options.
+        const best =
+          [...map.entries()].filter((a) => a[1] > 0.15) ||
+          [...map.entries()].sort((a, b) => a[1] - b[1]).filter((a, i) => i < 5);
+
+        if (best)
+          cell.cellElement.dataset[dir] = best
+            .map((a) => a[0])
+            .sort()
+            .join("");
+      }
+    });
+  }
+  return contentUpdated;
 }

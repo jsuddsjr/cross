@@ -209,10 +209,14 @@ function keyHandler(e) {
       }
       break;
     case "Backspace":
+      // Backspace doesn't cause board to recalculate.
+      this.shape.setContent();
+      direction = -1;
+      break;
     case "Delete":
       this.shape.setContent();
       this.subscribers.notify(CONTENT_EVENT);
-      direction = e.key === "Backspace" ? -1 : 0;
+      direction = 0;
       break;
     case "ArrowDown":
       this.activeWord = this.down;

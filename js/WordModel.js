@@ -126,7 +126,6 @@ export default class WordModel {
    * @param {1|0|-1} direction
    */
   setActiveWord(activeCell, direction = 0) {
-    console.log("setActiveWord", activeCell);
     if (activeWord !== this) {
       if (activeWord) activeWord.removeStates(ACTIVE_CLASS, ACTIVE_CELL_CLASS);
       this.addStates(ACTIVE_CLASS);
