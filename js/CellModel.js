@@ -141,7 +141,7 @@ export default class CellModel {
           } else {
             c.cellElement.classList.remove("blocked");
             c.cellElement.classList.add("active-cell");
-            c.shape.setContent(ShapeModel.anyType);
+            c.shape.reset();
           }
         }
       });
@@ -171,7 +171,9 @@ export default class CellModel {
 
 /**
  * Private event handler.
+ * @this {CellModel}
  * @param {Event} e
+ * @returns {Void}
  */
 function clickHandler(e) {
   if (e.ctrlKey) {
@@ -185,6 +187,7 @@ function clickHandler(e) {
 
 /**
  * Private event handler.
+ * @this {CellModel}
  * @param {Event} e
  * @returns {Void}
  */
@@ -200,21 +203,21 @@ function keyHandler(e) {
   switch (e.key) {
     case " ":
       e.preventDefault();
-      if (this.isBlocked || this.shape.getLetter() === " ") {
+      if (this.isBlocked || this.shape.isAnyType()) {
         this.toggleBlocked();
         this.subscribers.notify(BLOCKED_EVENT);
       } else {
-        this.shape.setContent(" ");
+        this.shape.reset();
         this.subscribers.notify(CONTENT_EVENT);
       }
       break;
     case "Backspace":
       // Backspace doesn't cause board to recalculate.
-      this.shape.setContent();
+      this.shape.reset();
       direction = -1;
       break;
     case "Delete":
-      this.shape.setContent();
+      this.shape.reset();
       this.subscribers.notify(CONTENT_EVENT);
       direction = 0;
       break;

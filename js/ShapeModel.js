@@ -2,7 +2,7 @@ const VOWEL = "0";
 const CONSONANT = "1";
 const ANY_TYPE = ".";
 const BLOCKED = "#";
-const SHAPE_MATCH = new RegExp(`[${BLOCKED}${VOWEL}${CONSONANT}${ANY_TYPE}]`, "g");
+const SHAPE_MATCH = new RegExp(`[${VOWEL}${CONSONANT}${ANY_TYPE}]`, "g");
 const LETTER_MATCH = /[a-z]/i;
 
 /**
@@ -18,7 +18,7 @@ export default class ShapeModel {
   }
 
   static isShapeChar(char) {
-    return SHAPE_MATCH.test(char);
+    return "#.01".indexOf(char) !== -1;
   }
 
   static isLetter(char) {
@@ -44,22 +44,34 @@ export default class ShapeModel {
     return BLOCKED;
   }
 
+  reset() {
+    this.cellElement.dataset.shape = ANY_TYPE;
+    this.cellElement.removeAttribute("data-letter");
+  }
+
+  isAnyType() {
+    return this.getShape() === ANY_TYPE;
+  }
+
   /**
    * Set the content of this cell.
    * @param {String} char
    */
-  setContent(char = " ") {
+  setContent(char) {
     if (char && char.length > 1) {
       throw new Error("Rebus squares (more than single letter) are not supported.");
     }
 
-    if (ShapeModel.isLetter(char)) {
-      this.cellElement.dataset.letter = char;
-    } else this.cellElement.removeAttribute("data-letter");
-
-    if (ShapeModel.isLetter(char) || ShapeModel.isShapeChar(char)) {
+    if (ShapeModel.isShapeChar(char)) {
       this.cellElement.dataset.shape = char;
-    } else this.cellElement.removeAttribute("data-shape");
+      this.cellElement.removeAttribute("data-letter");
+    } else if (ShapeModel.isLetter(char)) {
+      this.cellElement.dataset.shape = char;
+      this.cellElement.dataset.letter = char;
+    } else {
+      this.reset();
+      console.error(`Unrecognized character '${char}' for shape.`);
+    }
   }
 
   getShape() {

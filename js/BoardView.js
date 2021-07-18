@@ -33,6 +33,8 @@ export default class BoardView {
     this.index = new WordIndex();
     this.subscribers = new Subscribers(this);
     this.store = new GameStore();
+
+    this.addCrosswords = addCrossWords.bind(this);
   }
 
   /**
@@ -81,7 +83,7 @@ export default class BoardView {
 
   clearGrid() {
     this.cells.forEach((c) => {
-      c.shape.setContent();
+      c.shape.reset();
       c.clearAllStates();
     });
     this.subscribers.notify(LAYOUT_EVENT);
@@ -91,7 +93,7 @@ export default class BoardView {
     this.cells
       .filter((c) => c.cellElement.classList.contains(WordModel.WORD_WARNING_CLASS))
       .forEach((c) => {
-        c.shape.setContent();
+        c.shape.reset();
         c.clearAllStates();
       });
     this.updatePotentials();
@@ -137,7 +139,7 @@ export default class BoardView {
       const cellToLeft = i % this.size === 0 || this.cells[i - 1].isBlocked;
       if (cellAbove || cellToLeft) {
         cell.setClueNumber(currentNumber++);
-        this.addCrossWords(cell, i, cellToLeft, cellAbove);
+        this.addCrosswords(cell, i, cellToLeft, cellAbove);
       } else {
         cell.setClueNumber(-1);
       }
@@ -145,36 +147,6 @@ export default class BoardView {
 
     this.updatePotentials();
     this.subscribers.notify(LAYOUT_EVENT);
-  }
-
-  /**
-   * Create words starting at this location.
-   * @param {CellModel} anchorCell
-   * @param {Number} index
-   * @param {Boolean} across
-   * @param {Boolean} down
-   */
-  addCrossWords(anchorCell, index, across, down) {
-    if (across) {
-      const cellsAcross = [anchorCell];
-      const remainingRow = this.size - (index % this.size);
-      for (let i = 1; i < remainingRow; i++) {
-        const cell = this.cells[index + i];
-        if (cell.isBlocked) break;
-        cellsAcross.push(cell);
-      }
-      this.wordList.push(new WordModel(cellsAcross, "across"));
-    }
-
-    if (down) {
-      const cellsDown = [anchorCell];
-      for (let i = this.size; i < this.cells.length - index; i += this.size) {
-        const cell = this.cells[index + i];
-        if (cell.isBlocked) break;
-        cellsDown.push(cell);
-      }
-      this.wordList.push(new WordModel(cellsDown, "down"));
-    }
   }
 
   /**
@@ -212,6 +184,8 @@ export default class BoardView {
 
       bools = await Promise.all(promises);
     } while (--maxIterations && bools.length && bools.some((b) => b));
+
+    this.subscribers.notify(LAYOUT_EVENT);
   }
 
   /**
@@ -266,4 +240,51 @@ async function processPotentials(potentials) {
     });
   }
   return contentUpdated;
+}
+
+/**********************
+ * PRIVATE FUNCTIONS
+ **********************/
+
+/**
+ * Create words starting at this location.
+ * @this {BoardView}
+ * @param {CellModel} anchorCell
+ * @param {Number} index
+ * @param {Boolean} across
+ * @param {Boolean} down
+ */
+function addCrossWords(anchorCell, index, across, down) {
+  /**
+   * Add word to our list.
+   * @param {BoardView} board
+   * @param {CellModel[]} cells
+   * @param {String} dir
+   */
+  function bindWord(board, cells, dir) {
+    const word = new WordModel(cells, dir);
+    word.onUpdated(() => board.updatePotentials());
+    board.wordList.push(word);
+  }
+
+  if (across) {
+    const cellsAcross = [anchorCell];
+    const remainingRow = this.size - (index % this.size);
+    for (let i = 1; i < remainingRow; i++) {
+      const cell = this.cells[index + i];
+      if (cell.isBlocked) break;
+      cellsAcross.push(cell);
+    }
+    bindWord(this, cellsAcross, "across");
+  }
+
+  if (down) {
+    const cellsDown = [anchorCell];
+    for (let i = this.size; i < this.cells.length - index; i += this.size) {
+      const cell = this.cells[index + i];
+      if (cell.isBlocked) break;
+      cellsDown.push(cell);
+    }
+    bindWord(this, cellsDown, "down");
+  }
 }

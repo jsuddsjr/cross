@@ -28,7 +28,8 @@ if (
   clearErrorsBtn instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
-  const wordListView = new WordListView(boardView, across, down, count);
+  new WordListView(boardView, across, down, count);
+
   boardView.load(boardName);
 
   boardView.onSaved(() => {

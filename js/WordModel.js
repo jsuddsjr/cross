@@ -168,9 +168,10 @@ export default class WordModel {
 
   clearWord() {
     this.cells.forEach((c) => {
-      c.shape.setContent();
+      c.shape.reset();
       c.clearAllStates();
     });
+    this.subscribers.notify(UPDATED_EVENT);
   }
   /**
    * Reset the state in all cells.
