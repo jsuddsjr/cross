@@ -167,6 +167,44 @@ section {
   }
 }
 
+.grid-preview {
+  --preview-size: 15;
+
+  min-height: 250px;
+  max-height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px inset rgba(black, 0.5);
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+
+  a {
+    --preview-board-size: 130px;
+    display: block;
+    width: var(--preview-board-size);
+    height: var(--preview-board-size);
+    border: 1px solid black;
+    box-sizing: content-box;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    div {
+      --square-size: calc(var(--preview-board-size) / var(--preview-size));
+      width: var(--square-size);
+      height: var(--square-size);
+
+      &.b {
+        background-color: black;
+      }
+    }
+  }
+}
+
 .total {
   font-size: 0.8rem;
   line-height: 0.8;

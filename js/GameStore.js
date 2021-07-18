@@ -23,7 +23,11 @@ const TEMPLATES_DEFAULT = [
 export default class GameStore {
   constructor() {
     this.isUnsaved = false;
+
+    /** @type {string[]} */
     this._templates = readFromStorage(TEMPLATES_KEY) || TEMPLATES_DEFAULT;
+
+    /** @type {GameData} */
     this._lastSaved = readFromStorage(LAST_SAVED) || {
       id: LAST_SAVED,
       name: "",
@@ -76,6 +80,15 @@ export default class GameStore {
     this._templates.push(template);
     writeToStorage(TEMPLATES_KEY, this._templates);
     return true;
+  }
+
+  /**
+   * Find templates of a certain size;
+   * @param {Number} size
+   */
+  fetchTemplates(size) {
+    const sizeSquared = size * size;
+    return this._templates.filter((t) => t.length === sizeSquared);
   }
 
   /**
@@ -165,7 +178,6 @@ function writeToStorage(key, data) {
 
 /**
  * @param {String} key
- * @returns {GameData}
  */
 function readFromStorage(key) {
   return JSON.parse(localStorage.getItem(key));

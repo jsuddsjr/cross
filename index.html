@@ -62,9 +62,6 @@
                 <li><button class="dropdown-item js-save-template">Save as template</button></li>
               </ul>
             </li>
-          </ul>
-
-          <ul class="navbar-nav">
             <li class="navbar-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -81,13 +78,17 @@
                 <li><button type="button" class="dropdown-item js-clear-word">Clear current word</button></li>
                 <li><button type="button" class="dropdown-item js-clear-errors">Clear all errors</button></li>
                 <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#resetBoardModal">
-                    Reset board
-                  </button>
-                </li>
               </ul>
+            </li>
+            <li class="navbar-item">
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#resetBoardModal"
+              >
+                <i class="bi-asterisk" aria-hidden="true"></i>&nbsp;Reset board
+              </button>
             </li>
           </ul>
         </div>
@@ -143,10 +144,10 @@
                   <a class="nav-link" href="#" data-size="7">7x7</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#" data-size="7">9x9</a>
+                  <a class="nav-link" href="#" data-size="9">9x9</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#" data-size="11">11x11 (Beginner)</a>
+                  <a class="nav-link" href="#" data-size="11">11x11 (Small)</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#" data-size="13">13x13</a>
