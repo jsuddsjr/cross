@@ -80,7 +80,7 @@ section {
 .cell .number {
   position: absolute;
   font-size: 0.5em;
-  margin-left: 0.1em;
+  margin-left: 0.2em;
 }
 .cell[data-shape="1"] {
   border: 2px inset lawngreen;
@@ -109,7 +109,7 @@ section {
   background-color: lightblue;
 }
 .cell.error {
-  background-color: rgba(255, 0, 0, 0.2);
+  background-color: maroon;
 }
 .cell.active-cell {
   background-color: #5fb3ce;
@@ -123,29 +123,6 @@ section {
 }
 .cell.blocked .number {
   display: none;
-}
-
-.clues {
-  margin-top: 2em;
-}
-.clues h2 {
-  font-size: 1.2em;
-  font-weight: normal;
-  margin: 0 0 0.5em;
-}
-.clues .across {
-  margin-bottom: 1em;
-}
-.clues span[data-score]:before {
-  content: "[" attr(data-score) "]";
-  font-size: 0.8em;
-}
-@media screen and (min-width: 35em) {
-  .clues {
-    -webkit-columns: 2;
-       -moz-columns: 2;
-            columns: 2;
-  }
 }
 
 .grid-preview {
@@ -172,9 +149,10 @@ section {
   display: block;
   width: var(--preview-board-size);
   height: var(--preview-board-size);
-  border: 1px solid black;
   -webkit-box-sizing: content-box;
           box-sizing: content-box;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.3);
+  border-left: 0.5px solid rgba(0, 0, 0, 0.3);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -185,12 +163,37 @@ section {
   --square-size: calc(var(--preview-board-size) / var(--preview-size));
   width: var(--square-size);
   height: var(--square-size);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
+  border-right: 0.5px solid rgba(0, 0, 0, 0.3);
 }
 .grid-preview a div.b {
   background-color: black;
 }
 
-.total {
+.clues {
+  margin-top: 2em;
+}
+.clues h2 {
+  font-size: 1.2em;
+  font-weight: normal;
+  margin: 0 0 0.5em;
+}
+.clues .across {
+  margin-bottom: 1em;
+}
+.clues span[data-score]:before {
+  content: "[" attr(data-score) "]";
+  font-size: 0.8em;
+}
+@media screen and (min-width: 35em) {
+  .clues {
+    -webkit-columns: 2;
+       -moz-columns: 2;
+            columns: 2;
+  }
+}
+
+.totals {
   font-size: 0.8rem;
   line-height: 0.8;
 }

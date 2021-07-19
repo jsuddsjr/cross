@@ -9,9 +9,6 @@ const boardSize = parseInt(params.get("size") || DEFAULT_BOARD_SIZE);
 const boardName = params.get("name");
 
 const board = document.querySelector(".board");
-const across = document.getElementById("across");
-const down = document.getElementById("down");
-const count = document.querySelector("span.count");
 const saveBtn = document.querySelector(".js-save-btn");
 const clearWordBtn = document.querySelector(".js-clear-word");
 const clearGridBtn = document.querySelector(".js-clear-grid");
@@ -20,9 +17,6 @@ const saveTemplateBtn = document.querySelector(".js-save-template");
 
 if (
   board instanceof HTMLElement &&
-  across instanceof HTMLElement &&
-  down instanceof HTMLElement &&
-  count instanceof HTMLElement &&
   saveBtn instanceof HTMLButtonElement &&
   clearWordBtn instanceof HTMLButtonElement &&
   clearGridBtn instanceof HTMLButtonElement &&
@@ -30,7 +24,7 @@ if (
   saveTemplateBtn instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
-  new WordListView(boardView, across, down, count);
+  new WordListView(boardView, ".clues", ".totals");
 
   boardView.load(boardName);
 
@@ -80,6 +74,17 @@ if (
   resetModal.onSubmit(() => {
     boardView.setSize(resetModal.selectedSize);
     boardView.clear();
+  });
+
+  document.body.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "c": {
+        if (e.ctrlKey) {
+          boardView.clearErrors();
+          e.preventDefault();
+        }
+      }
+    }
   });
 } else {
   throw new Error("Initialization failed. Missing require UI elements.");

@@ -218,16 +218,26 @@ export default class BoardView {
   }
 }
 
+/**********************
+ * PRIVATE FUNCTIONS
+ **********************/
+
+/**
+ * What letters are possible?
+ * @this {WordModel}
+ * @param {Map<string, number>[]} potentials
+ */
 async function processPotentials(potentials) {
   let contentUpdated = false;
+  const cells = this.cells;
+  const dir = this.direction;
+
+  cells.map((c) => c.cellElement.removeAttribute(`data-${dir}`));
   if (potentials.length === 0 || potentials[0].size === 0) {
     this.addStates(WordModel.WORD_WARNING_CLASS, this.direction);
   } else {
-    const cells = this.cells;
-    const dir = this.direction;
     potentials.forEach((map, index) => {
       const cell = cells[index];
-      cell.cellElement.removeAttribute(`data-${dir}`);
       if (map.size === 1) {
         const c = [...map.keys()][0];
         if (cell.shape.getShape() !== c) {
@@ -236,11 +246,13 @@ async function processPotentials(potentials) {
         }
       } else {
         // Filter by most probable options.
-        const best =
-          [...map.entries()].filter((a) => a[1] > 0.15) ||
-          [...map.entries()].sort((a, b) => a[1] - b[1]).filter((a, i) => i < 5);
+        let best = [...map.entries()].filter((a) => a[1] > 0.15);
+        if (!best.length) {
+          // Or, take top best ones.
+          best = [...map.entries()].sort((a, b) => a[1] - b[1]).filter((a, i) => i < 5);
+        }
 
-        if (best)
+        if (best.length)
           cell.cellElement.dataset[dir] = best
             .map((a) => a[0])
             .sort()
@@ -248,12 +260,10 @@ async function processPotentials(potentials) {
       }
     });
   }
+
+  // Did we place any new letters?
   return contentUpdated;
 }
-
-/**********************
- * PRIVATE FUNCTIONS
- **********************/
 
 /**
  * Create words starting at this location.

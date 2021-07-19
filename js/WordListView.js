@@ -1,18 +1,21 @@
+import ShapeModel from "./ShapeModel.js";
+
 /** @typedef {import("./WordModel.js").default} WordModel */
 
 export default class WordListView {
   /**
    * Constructor.
    * @param {import("./BoardView.js").default} board
-   * @param {HTMLElement} acrossElement
-   * @param {HTMLElement} downElement
-   * @param {HTMLElement} countElement
+   * @param {string} cluesSelector
+   * @param {string} totalsSelector
    */
-  constructor(board, acrossElement, downElement, countElement) {
-    this.board = board.onLayout(this.update.bind(this));
-    this.acrossElement = acrossElement;
-    this.downElement = downElement;
-    this.countElement = countElement;
+  constructor(board, cluesSelector, totalsSelector) {
+    this.board = board.onLayout(this.handleBoardLayout.bind(this));
+    this.acrossElement = document.querySelector(cluesSelector + " #across");
+    this.downElement = document.querySelector(cluesSelector + " #down");
+    this.countElement = document.querySelector(totalsSelector + " .wordCount");
+    this.lettersElement = document.querySelector(totalsSelector + " .letterCount");
+    this.scrabbleScore = document.querySelector(totalsSelector + " .scrabbleScore");
 
     // DEBUG
     this.shapeElement = document.querySelector(".shape");
@@ -21,11 +24,11 @@ export default class WordListView {
     this.across = this.down = null;
 
     /** @type {Map<WordModel, String>} */
-    this.map = new Map();
+    this.clueMap = new Map();
   }
 
-  update() {
-    this.map.clear();
+  handleBoardLayout() {
+    this.clueMap.clear();
     this.across = [];
     this.down = [];
 
@@ -34,27 +37,29 @@ export default class WordListView {
 
     for (let w of wordList) {
       this[w.direction].push(w);
-      this.map.set(w, this.clueFromWord(w));
-      w.onUpdated(this.updateWord.bind(this));
+      this.clueMap.set(w, this.clueFromWord(w));
+      w.onUpdated(this.handleWordUpdate.bind(this));
     }
 
     this.repaint();
-    this.shapeFromBoard();
   }
 
-  updateWord(word) {
-    this.map.set(word, this.clueFromWord(word));
+  handleWordUpdate(word) {
+    this.clueMap.set(word, this.clueFromWord(word));
     this.repaint();
   }
 
   repaint() {
-    this.acrossElement.innerHTML = this.across.map((w) => this.map.get(w)).join("");
-    this.downElement.innerHTML = this.down.map((w) => this.map.get(w)).join("");
-  }
+    this.acrossElement.innerHTML = this.across.map((w) => this.clueMap.get(w)).join("");
+    this.downElement.innerHTML = this.down.map((w) => this.clueMap.get(w)).join("");
+    this.scrabbleScore.textContent = [...this.clueMap.keys()].reduce((score, w) => (score += w.getScrabbleValue()), 0);
 
-  shapeFromBoard() {
+    const shape = this.board.cells.map((c) => c.shape.getShape()).join("");
+    const uniqueLetters = new Set([...shape].filter((c) => !ShapeModel.isShapeChar(c)));
+    this.lettersElement.textContent = uniqueLetters.size;
+
     if (this.shapeElement) {
-      this.shapeElement.textContent = this.board.cells.map((c) => c.shape.getShape()).join("");
+      this.shapeElement.textContent = shape;
     }
   }
 
