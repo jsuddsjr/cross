@@ -73,16 +73,28 @@ if (
   const resetModal = new ResetBoardModal("resetBoardModal");
   resetModal.onSubmit(() => {
     boardView.setSize(resetModal.selectedSize);
-    boardView.clear();
+    if (resetModal.selectedBoard) {
+      boardView.loadTemplate(resetModal.selectedBoard.dataset.template);
+    } else {
+      boardView.clear();
+    }
   });
 
   document.body.addEventListener("keydown", (e) => {
     switch (e.key) {
-      case "c": {
+      case "x": {
         if (e.ctrlKey) {
           boardView.clearErrors();
           e.preventDefault();
         }
+        break;
+      }
+      case "X": {
+        if (e.ctrlKey && WordModel.activeWord) {
+          WordModel.activeWord.clearWord();
+          e.preventDefault();
+        }
+        break;
       }
     }
   });

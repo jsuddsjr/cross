@@ -51,7 +51,7 @@ section {
 }
 
 .word-warning {
-  color: red;
+  color: maroon;
 }
 .word-warning.down {
   -webkit-box-shadow: inset 4px 0 4px #ff6666;
@@ -83,10 +83,10 @@ section {
   margin-left: 0.2em;
 }
 .cell[data-shape="1"] {
-  border: 2px inset lawngreen;
+  border: 3px inset lawngreen;
 }
 .cell[data-shape="0"] {
-  border: 2px inset yellow;
+  border: 3px inset orange;
 }
 .cell[data-across]:before {
   content: attr(data-across);
@@ -109,7 +109,7 @@ section {
   background-color: lightblue;
 }
 .cell.error {
-  background-color: maroon;
+  background-color: rgba(255, 0, 0, 0.2);
 }
 .cell.active-cell {
   background-color: #5fb3ce;
@@ -168,6 +168,11 @@ section {
 }
 .grid-preview a div.b {
   background-color: black;
+}
+.grid-preview a.selected {
+  outline: 2px solid black;
+  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .clues {

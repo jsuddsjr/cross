@@ -10,6 +10,9 @@ export default class ResetBoardModal {
     this.links = [...this.modal.querySelectorAll("a")];
     this.selectedSize = 15;
 
+    /** @type {HTMLElement} */
+    this.selectedBoard = null;
+
     /** @type {HTMLButtonElement} */
     this.okButton = this.modal.querySelector(".js-create-btn");
 
@@ -58,6 +61,18 @@ export default class ResetBoardModal {
       .join("");
 
     this.previewPane.appendChild(boardPreview);
+
+    boardPreview.onclick = () => {
+      if (this.selectedBoard) {
+        this.selectedBoard.classList.remove("selected");
+      }
+      if (this.selectedBoard != boardPreview) {
+        this.selectedBoard = boardPreview;
+        boardPreview.classList.add("selected");
+      } else {
+        this.selectedBoard = null;
+      }
+    };
   }
 
   onSubmit(cb) {

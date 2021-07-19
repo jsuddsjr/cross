@@ -75,8 +75,8 @@
                 <i class="bi-trash" aria-hidden="true"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="clearMenu">
-                <li><button type="button" class="dropdown-item js-clear-word">Clear current word</button></li>
-                <li><button type="button" class="dropdown-item js-clear-errors">Clear all errors (Ctrl+C)</button></li>
+                <li><button type="button" class="dropdown-item js-clear-word">Clear current word (Shift+Ctrl+X)</button></li>
+                <li><button type="button" class="dropdown-item js-clear-errors">Clear all errors (Ctrl+X)</button></li>
                 <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
               </ul>
             </li>
@@ -223,12 +223,16 @@
             <h4>Interaction</h4>
             <dl>
               <dt>Arrow keys</dt>
-              <dd>Move the cursor within the currently selected word, or switches directions of the selected word.</dd>
+              <dd>Move the cursor within the currently selected word, or switch direction of the selected word.</dd>
               <dt>Backspace</dt>
               <dd>
                 Reset the current cell and move the cursor backward. This action does not recalculate the board, so you
                 can delete as much as you want.
               </dd>
+              <dt>Ctrl+C</dt>
+              <dd>Clear all the errors. Sometimes, you just need to start again with a clear slate.</dd>
+              <dt>Shift+Ctrl+C</dt>
+              <dd>Clear the current word. Use this to remove letters that stubbornly reappear after recalculation.</dd>
               <dt>Ctrl+Click</dt>
               <dd>Adds a black block to the grid. Also creates an exact mirror of the block.</dd>
               <dt>Del</dt>

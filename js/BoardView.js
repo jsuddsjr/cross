@@ -85,6 +85,11 @@ export default class BoardView {
     }
   }
 
+  loadTemplate(template) {
+    this.cells = this.store.cellsFromBoard({ cells: template });
+    this.show();
+  }
+
   clear() {
     this.cells = Array.from({ length: this.size * this.size }, () => new CellModel());
     this.show();
