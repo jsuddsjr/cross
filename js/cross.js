@@ -1,5 +1,6 @@
 import BoardView from "./BoardView.js";
 import ResetBoardModal from "./ResetBoardModal.js";
+import LoadBoardModal from "./LoadBoardModal.js";
 import WordModel from "./WordModel.js";
 import WordListView from "./WordListView.js";
 
@@ -36,6 +37,13 @@ if (
     }
   });
 
+  const loadModal = new LoadBoardModal("loadSavedModal");
+  loadModal.onSubmit(() => {
+    if (loadModal.selectedBoard) {
+      boardView.load(loadModal.selectedBoard);
+    }
+  });
+
   boardView.load(boardName);
 
   boardView.onSaved(() => {
@@ -44,6 +52,8 @@ if (
     /** @type {HTMLInputElement} */
     const name = form.elements.namedItem("name");
     name.value = boardView.title;
+
+    loadModal.loadBoards();
   });
 
   saveBtn.onclick = (e) => {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crossword Editor</title>
-    <meta name="description" content="A simple American-style crossword editor. Final project for WDD330.">
+    <meta name="description" content="A simple American-style crossword editor. Final project for WDD330." />
     <!-- Latest compiled and minified CSS -->
     <!-- CSS only -->
     <link
@@ -63,9 +63,12 @@
                   <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">Save board</button>
                 </li>
                 <li><button class="dropdown-item js-save-template">Save as template</button></li>
-                <li><hr class="dropdown-divider"></li>
+                <li><hr class="dropdown-divider" /></li>
                 <li>
-
+                  <!-- Button trigger modal -->
+                  <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loadSavedModal">
+                    Load saved
+                  </button>
                 </li>
               </ul>
             </li>
@@ -82,7 +85,9 @@
                 <i class="bi-trash" aria-hidden="true"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="clearMenu">
-                <li><button type="button" class="dropdown-item js-clear-word">Clear current word (Shift+Ctrl+X)</button></li>
+                <li>
+                  <button type="button" class="dropdown-item js-clear-word">Clear current word (Shift+Ctrl+X)</button>
+                </li>
                 <li><button type="button" class="dropdown-item js-clear-errors">Clear all errors (Ctrl+X)</button></li>
                 <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
               </ul>
@@ -133,7 +138,10 @@
         <h2>Down</h2>
         <ol id="down"></ol>
       </section>
-      <p class="totals">Words: <span class="wordCount"></span> | Unique letters: <span class="letterCount"></span> | Scrabble score: <span class="scrabbleScore"></span></p>
+      <p class="totals">
+        Words: <span class="wordCount"></span> | Unique letters: <span class="letterCount"></span> | Scrabble score:
+        <span class="scrabbleScore"></span>
+      </p>
       <pre class="shape"></pre>
     </section>
 
@@ -214,15 +222,60 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade mh-100" id="helpModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="loadSavedModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="loadSavedModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Hints and Tips</h5>
+            <h5 class="modal-title" id="loadSavedModalLabel">Load saved board</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h3>This is not a game</h2>
+            <form id="load-form">
+              <div class="select">
+                <label id="saved_name_label" for="saved_name">Boards</label>
+                <div class="input-group mb-3">
+                  <select
+                    id="saved_name"
+                    name="saved_name"
+                    class="form-control form-select"
+                    aria-label="Boards"
+                  ></select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary js-load-btn" data-bs-dismiss="modal">Load</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade mh-100"
+      id="helpModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="helpModalTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="helpModalTitle">Hints and Tips</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h3>This is not a game</h3>
             <p>
               You aren't solving a crossword, <i>you're creating one</i>. Clues aren't provided because you don't need
               them. Just enter a few letters and see how far you get.

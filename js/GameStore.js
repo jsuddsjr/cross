@@ -49,11 +49,13 @@ let _isUnsaved = false;
 export default class GameStore {
   /**
    * Read all boards from storage.
+   * @returns {GameData[]}
    */
   get boards() {
     return Object.keys(localStorage)
+      .sort()
       .filter((key) => key.startsWith(PREFIX))
-      .map((k) => readFromStorage(k));
+      .map(readFromStorage);
   }
 
   /**
