@@ -26,6 +26,16 @@ if (
   const boardView = new BoardView(board, boardSize);
   new WordListView(boardView, ".clues", ".totals");
 
+  const resetModal = new ResetBoardModal("resetBoardModal");
+  resetModal.onSubmit(() => {
+    boardView.setSize(resetModal.selectedSize);
+    if (resetModal.selectedBoard) {
+      boardView.loadTemplate(resetModal.selectedBoard.dataset.template);
+    } else {
+      boardView.clear();
+    }
+  });
+
   boardView.load(boardName);
 
   boardView.onSaved(() => {
@@ -67,18 +77,10 @@ if (
 
   saveTemplateBtn.onclick = (e) => {
     e.preventDefault();
-    boardView.saveAsTemplate();
-  };
-
-  const resetModal = new ResetBoardModal("resetBoardModal");
-  resetModal.onSubmit(() => {
-    boardView.setSize(resetModal.selectedSize);
-    if (resetModal.selectedBoard) {
-      boardView.loadTemplate(resetModal.selectedBoard.dataset.template);
-    } else {
-      boardView.clear();
+    if (boardView.saveAsTemplate()) {
+      resetModal.fetchPreviews();
     }
-  });
+  };
 
   document.body.addEventListener("keydown", (e) => {
     switch (e.key) {

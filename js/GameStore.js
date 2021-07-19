@@ -1,6 +1,13 @@
 import CellModel from "./CellModel.js";
 import ShapeModel from "./ShapeModel.js";
 
+/**
+ * @typedef {Object} GameData
+ * @property {String} id    Storage key.
+ * @property {String} name  Friendly name of the saved game.
+ * @property {String} cells String of cells.
+ */
+
 const PREFIX = "xw_";
 const LAST_SAVED = "xw-in-progress";
 const TEMPLATES_KEY = "xw-templates";
@@ -29,28 +36,17 @@ const TEMPLATES_DEFAULT = [
   ".....#.....#..........#.....#..........#.....#..........#.....#...........#.......###.......#.....#...#......#.........#####.....#...........#.....#...........#.....#####.........#......#...#.....#.......###.......#...........#.....#..........#.....#..........#.....#..........#.....#.....",
 ];
 
-/**
- * @typedef {Object} GameData
- * @property {String} id    Storage key.
- * @property {String} name  Friendly name of the saved game.
- * @property {String} cells String of cells.
- */
+const _templates = readFromStorage(TEMPLATES_KEY) || TEMPLATES_DEFAULT;
+
+let _lastSaved = readFromStorage(LAST_SAVED) || {
+  id: LAST_SAVED,
+  name: "",
+  cells: _templates[0],
+};
+
+let _isUnsaved = false;
 
 export default class GameStore {
-  constructor() {
-    this.isUnsaved = false;
-
-    /** @type {string[]} */
-    this._templates = readFromStorage(TEMPLATES_KEY) || TEMPLATES_DEFAULT;
-
-    /** @type {GameData} */
-    this._lastSaved = readFromStorage(LAST_SAVED) || {
-      id: LAST_SAVED,
-      name: "",
-      cells: this._templates[0],
-    };
-  }
-
   /**
    * Read all boards from storage.
    */
@@ -64,7 +60,11 @@ export default class GameStore {
    * The last saved temporary board.
    */
   get lastSaved() {
-    return this._lastSaved;
+    return _lastSaved;
+  }
+
+  get isUnsaved() {
+    return _isUnsaved;
   }
 
   /**
@@ -81,8 +81,8 @@ export default class GameStore {
       cells: boardFromCells(cells),
     };
     writeToStorage(id, board);
-    this._lastSaved = board;
-    this.isUnsaved = false;
+    _lastSaved = board;
+    _isUnsaved = false;
   }
 
   /**
@@ -91,10 +91,10 @@ export default class GameStore {
    */
   saveTemplate(cells) {
     const template = cells.map((c) => (c.isBlocked ? ShapeModel.blockedType : ShapeModel.anyType)).join("");
-    if (this._templates.includes(template)) return false;
+    if (_templates.includes(template)) return false;
 
-    this._templates.push(template);
-    writeToStorage(TEMPLATES_KEY, this._templates);
+    _templates.push(template);
+    writeToStorage(TEMPLATES_KEY, _templates);
     return true;
   }
 
@@ -104,7 +104,7 @@ export default class GameStore {
    */
   fetchTemplates(size) {
     const sizeSquared = size * size;
-    return this._templates.filter((t) => t.length === sizeSquared);
+    return _templates.filter((t) => t.length === sizeSquared);
   }
 
   /**
@@ -137,11 +137,11 @@ export default class GameStore {
     if (name) {
       if (name.startsWith("template")) {
         const index = parseInt(name.substring(8)) || 0;
-        if (index >= 0 && index < this._templates.length) {
-          this._lastSaved.cells = this._templates[index];
+        if (index >= 0 && index < _templates.length) {
+          _lastSaved.cells = _templates[index];
         }
       }
-      return readFromStorage(keyFromName(name)) || this._lastSaved;
+      return readFromStorage(keyFromName(name)) || _lastSaved;
     }
   }
 
@@ -161,9 +161,9 @@ export default class GameStore {
   }
 
   writeTempData(cells) {
-    this._lastSaved.cells = boardFromCells(cells);
-    writeToStorage(LAST_SAVED, this._lastSaved);
-    this.isUnsaved = true;
+    _lastSaved.cells = boardFromCells(cells);
+    writeToStorage(LAST_SAVED, _lastSaved);
+    _isUnsaved = true;
   }
 }
 

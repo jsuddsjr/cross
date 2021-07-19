@@ -68,8 +68,10 @@ export default class BoardView {
     if (this.store.saveTemplate(this.cells)) {
       this.title = `${this.size}x${this.size} template`;
       this.subscribers.notify(SAVED_EVENT);
+      return true;
     } else {
       alert("Matching template already saved.");
+      return false;
     }
   }
 

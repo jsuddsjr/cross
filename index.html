@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crossword Generator</title>
+    <title>Crossword Editor</title>
+    <meta name="description" content="A simple American-style crossword editor. Final project for WDD330.">
     <!-- Latest compiled and minified CSS -->
     <!-- CSS only -->
     <link
@@ -11,6 +12,7 @@
       rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
+      rel="noreferrer"
     />
 
     <!-- Bootstrap icons -->
@@ -19,6 +21,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
       integrity="sha384-tKLJeE1ALTUwtXlaGjJYM3sejfssWdAaWR2s97axw4xkiAdMzQjtOjgcyw0Y50KU"
       crossorigin="anonymous"
+      rel="noreferrer"
     />
 
     <link rel="stylesheet" href="css/cross.min.css" />
@@ -27,7 +30,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-gradient">
       <div class="container-fluid">
-        <div class="navbar-brand">Crossword Generator</div>
+        <div class="navbar-brand">Crossword Editor</div>
 
         <button
           class="navbar-toggler"
@@ -60,6 +63,10 @@
                   <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">Save board</button>
                 </li>
                 <li><button class="dropdown-item js-save-template">Save as template</button></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+
+                </li>
               </ul>
             </li>
             <li class="navbar-item dropdown">
@@ -100,7 +107,7 @@
                 aria-expanded="false"
                 title="Help menu"
               >
-                <i class="bi-question" aria-hidden="true"></i>
+                <i class="bi-info-circle-fill" aria-hidden="true"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpMenu">
                 <li><button type="button" class="dropdown-item js-define-word">Define current word</button></li>
@@ -195,7 +202,7 @@
             <div class="grid-preview"></div>
             <p class="small">
               Find more grids at
-              <a href="https://crosswordgrids.com/" target="_blank">CrosswordGrids.com</a>.
+              <a href="https://crosswordgrids.com/" target="_blank" rel="noreferrer">CrosswordGrids.com</a>.
             </p>
           </div>
           <div class="modal-footer">
@@ -229,10 +236,10 @@
                 Reset the current cell and move the cursor backward. This action does not recalculate the board, so you
                 can delete as much as you want.
               </dd>
-              <dt>Ctrl+C</dt>
-              <dd>Clear all the errors. Sometimes, you just need to start again with a clear slate.</dd>
-              <dt>Shift+Ctrl+C</dt>
-              <dd>Clear the current word. Use this to remove letters that stubbornly reappear after recalculation.</dd>
+              <dt>Ctrl+X</dt>
+              <dd>Clear all the errors. Sometimes, you just need to back up and start again.</dd>
+              <dt>Shift+Ctrl+X</dt>
+              <dd>Clear the current word. Removes letters that stubbornly reappear after recalculation.</dd>
               <dt>Ctrl+Click</dt>
               <dd>Adds a black block to the grid. Also creates an exact mirror of the block.</dd>
               <dt>Del</dt>
