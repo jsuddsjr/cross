@@ -251,14 +251,11 @@ async function processPotentials(potentials) {
           cell.shape.setContent(c);
           contentUpdated = true;
         }
+      } else if (map.size < 6) {
+        cell.cellElement.dataset[dir] = [...map.keys()].sort().join("");
       } else {
         // Filter by most probable options.
         let best = [...map.entries()].filter((a) => a[1] > 0.15);
-        if (!best.length) {
-          // Or, take top best ones.
-          best = [...map.entries()].sort((a, b) => a[1] - b[1]).filter((a, i) => i < 5);
-        }
-
         if (best.length)
           cell.cellElement.dataset[dir] = best
             .map((a) => a[0])
