@@ -28,6 +28,7 @@ export default class ResetBoardModal {
         this.links.forEach((a) => a.classList.remove("active"));
         a.classList.add("active");
         this.selectedSize = parseInt(a.dataset.size);
+        this.selectedBoard = null;
         this.fetchPreviews();
       })
     );
