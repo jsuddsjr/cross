@@ -17,6 +17,7 @@ export default class ShapeModel {
     this.cellElement = cellElement;
   }
 
+  /** @param {String} char */
   static isShapeChar(char) {
     return "#.01".indexOf(char) !== -1;
   }
@@ -49,8 +50,12 @@ export default class ShapeModel {
     this.cellElement.removeAttribute("data-letter");
   }
 
-  isAnyType() {
+  get isAnyType() {
     return this.getShape() === ANY_TYPE;
+  }
+
+  get isShapeChar() {
+    return ShapeModel.isShapeChar(this.getShape());
   }
 
   /**

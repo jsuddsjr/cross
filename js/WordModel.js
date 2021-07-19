@@ -84,6 +84,10 @@ export default class WordModel {
     return ACTIVE_CELL_CLASS;
   }
 
+  get isComplete() {
+    return this.cells.every((c) => !c.shape.isShapeChar);
+  }
+
   /**
    * @returns A simplified object suitable for storage.
    */

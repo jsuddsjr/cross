@@ -210,7 +210,7 @@ function keyHandler(e) {
   switch (e.key) {
     case " ":
       e.preventDefault();
-      if (this.isBlocked || this.shape.isAnyType()) {
+      if (this.isBlocked || this.shape.isAnyType) {
         if (e.shiftKey) this.toggleOne();
         else this.toggleBlocked();
         this.subscribers.notify(BLOCKED_EVENT);

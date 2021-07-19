@@ -15,6 +15,8 @@ const clearWordBtn = document.querySelector(".js-clear-word");
 const clearGridBtn = document.querySelector(".js-clear-grid");
 const clearErrorsBtn = document.querySelector(".js-clear-errors");
 const saveTemplateBtn = document.querySelector(".js-save-template");
+const defineWordBtn = document.querySelector(".js-define-word");
+const searchWikiBtn = document.querySelector(".js-search-wiki");
 
 if (
   board instanceof HTMLElement &&
@@ -22,7 +24,9 @@ if (
   clearWordBtn instanceof HTMLButtonElement &&
   clearGridBtn instanceof HTMLButtonElement &&
   clearErrorsBtn instanceof HTMLButtonElement &&
-  saveTemplateBtn instanceof HTMLButtonElement
+  saveTemplateBtn instanceof HTMLButtonElement &&
+  defineWordBtn instanceof HTMLButtonElement &&
+  searchWikiBtn instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
   new WordListView(boardView, ".clues", ".totals");
@@ -91,6 +95,26 @@ if (
       resetModal.fetchPreviews();
     }
   };
+
+  const createAnchor = (url, target = "_blank") => {
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.rel = "noopener noreferrer";
+    anchor.target = target;
+    document.body.appendChild(anchor).click();
+  };
+
+  const wordHandler = (urlTemplate, e) => {
+    e.preventDefault();
+    if (WordModel.activeWord && WordModel.activeWord.isComplete) {
+      createAnchor(urlTemplate + WordModel.activeWord.getShape());
+    } else {
+      alert("Select a complete word first.");
+    }
+  };
+
+  defineWordBtn.onclick = wordHandler.bind(null, "https://google.com/search?q=define%20");
+  searchWikiBtn.onclick = wordHandler.bind(null, "https://en.wikipedia.org/wiki/");
 
   document.body.addEventListener("keydown", (e) => {
     switch (e.key) {
