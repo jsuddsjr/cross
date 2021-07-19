@@ -203,7 +203,6 @@ function clickHandler(e) {
 function keyHandler(e) {
   // Don't block keyboard shortcuts.
   if (e.ctrlKey || e.altKey) return;
-  e.preventDefault();
 
   /** @type {1|0|-1} */
   let direction = 1;
@@ -252,6 +251,9 @@ function keyHandler(e) {
       } else return;
     }
   }
+
+  // We'll handle this input.
+  e.preventDefault();
 
   if (this.activeWord) this.activeWord.setActiveWord(this, direction);
 }
