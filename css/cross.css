@@ -44,9 +44,11 @@ section {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  width: calc((var(--box-size) * var(--board-size)) + 1px);
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
+  width: calc(var(--box-size) * var(--board-size));
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
   margin: 0 auto;
 }
 
@@ -71,11 +73,15 @@ section {
   display: grid;
   place-content: center;
   pointer-events: all;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
   width: var(--box-size);
   height: var(--box-size);
   background-color: white;
+  -webkit-transition: background-color 0.4s ease-in-out;
+  transition: background-color 0.4s ease-in-out;
 }
 .cell .number {
   position: absolute;
@@ -117,6 +123,7 @@ section {
 .cell.blocked {
   background-color: black;
   color: black;
+  border: 0;
 }
 .cell.blocked::before {
   content: "";

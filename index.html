@@ -26,124 +26,142 @@
 
     <link rel="stylesheet" href="css/cross.min.css" />
   </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-gradient">
-      <div class="container-fluid">
-        <div class="navbar-brand">Crossword Editor</div>
+  <body class="d-flex flex-column vh-100">
+    <main class="flex-shrink-0">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-gradient">
+        <div class="container-fluid">
+          <div class="navbar-brand">Crossword Editor</div>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTools"
-          aria-controls="navbarTools"
-          aria-expanded="false"
-          aria-label="Open toolbar"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTools"
+            aria-controls="navbarTools"
+            aria-expanded="false"
+            aria-label="Open toolbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-        <div class="collapse navbar-collapse" id="navbarTools">
-          <ul class="navbar-nav ms-auto">
-            <li class="navbar-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="saveMenu"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                title="Save menu"
-              >
-                <i class="bi-save" aria-hidden="true"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="saveMenu">
-                <li>
-                  <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">Save board</button>
-                </li>
-                <li><button class="dropdown-item js-save-template">Save as template</button></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <!-- Button trigger modal -->
-                  <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loadSavedModal">
-                    Load saved
-                  </button>
-                </li>
-              </ul>
-            </li>
-            <li class="navbar-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="clearMenu"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                title="Clear menu"
-              >
-                <i class="bi-trash" aria-hidden="true"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="clearMenu">
-                <li>
-                  <button type="button" class="dropdown-item js-clear-word">Clear current word (Shift+Ctrl+X)</button>
-                </li>
-                <li><button type="button" class="dropdown-item js-clear-errors">Clear all errors (Ctrl+X)</button></li>
-                <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
-              </ul>
-            </li>
-            <li class="navbar-item">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#resetBoardModal"
-              >
-                <i class="bi-asterisk" aria-hidden="true"></i>&nbsp;Reset board
-              </button>
-            </li>
-            <li class="navbar-item">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="helpMenu"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                title="Help menu"
-              >
-                <i class="bi-info-circle-fill" aria-hidden="true"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpMenu">
-                <li><button type="button" class="dropdown-item js-define-word">Define current word</button></li>
-                <li><button type="button" class="dropdown-item js-search-wiki">Search Wikipedia</button></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#helpModal">
-                    <i class="bi-info-circle"></i>&nbsp;Get help
-                  </button>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <div class="collapse navbar-collapse" id="navbarTools">
+            <ul class="navbar-nav ms-auto">
+              <li class="navbar-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="saveMenu"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  title="Save menu"
+                >
+                  <i class="bi-save" aria-hidden="true"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="saveMenu">
+                  <li>
+                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">
+                      Save board
+                    </button>
+                  </li>
+                  <li><button class="dropdown-item js-save-template">Save as template</button></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loadSavedModal">
+                      Load saved
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <li class="navbar-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="clearMenu"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  title="Clear menu"
+                >
+                  <i class="bi-trash" aria-hidden="true"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="clearMenu">
+                  <li>
+                    <button type="button" class="dropdown-item js-clear-word">Clear current word (Shift+Ctrl+X)</button>
+                  </li>
+                  <li>
+                    <button type="button" class="dropdown-item js-clear-errors">Clear all errors (Ctrl+X)</button>
+                  </li>
+                  <li><button type="button" class="dropdown-item js-clear-grid">Clear grid</button></li>
+                </ul>
+              </li>
+              <li class="navbar-item">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#resetBoardModal"
+                >
+                  <i class="bi-asterisk" aria-hidden="true"></i>&nbsp;Reset board
+                </button>
+              </li>
+              <li class="navbar-item">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="helpMenu"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  title="Help menu"
+                >
+                  <i class="bi-info-circle-fill" aria-hidden="true"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpMenu">
+                  <li><button type="button" class="dropdown-item js-define-word">Define current word</button></li>
+                  <li><button type="button" class="dropdown-item js-search-wiki">Search Wikipedia</button></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#helpModal">
+                      <i class="bi-info-circle"></i>&nbsp;Get help
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
 
-    <section>
-      <div class="board"></div>
-      <section class="clues">
-        <h2>Across</h2>
-        <ol id="across"></ol>
-        <h2>Down</h2>
-        <ol id="down"></ol>
+      <section>
+        <div class="board"></div>
+        <section class="clues">
+          <h2>Across</h2>
+          <ol id="across"></ol>
+          <h2>Down</h2>
+          <ol id="down"></ol>
+        </section>
+        <p class="totals">
+          Words: <span class="wordCount"></span> | Unique letters: <span class="letterCount"></span> | Scrabble score:
+          <span class="scrabbleScore"></span>
+        </p>
+        <pre class="shape"></pre>
       </section>
-      <p class="totals">
-        Words: <span class="wordCount"></span> | Unique letters: <span class="letterCount"></span> | Scrabble score:
-        <span class="scrabbleScore"></span>
-      </p>
-      <pre class="shape"></pre>
-    </section>
+    </main>
+
+    <footer class="footer position-sticky mt-auto py-3 bg-light" role="contentinfo">
+      <div class="container-fluid text-center">
+        <span class="text-muted small"
+          >&copy; John Sudds &mdash; BYI-Idaho.
+          <a href="https://github.com/jsuddsjr/cross" rel="noopener" target="_blank">
+            <i class="bi-github"></i>
+            Fork me on GitHub.</a
+          >
+        </span>
+      </div>
+    </footer>
 
     <div class="modal fade" id="saveBoardAs" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

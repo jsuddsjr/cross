@@ -50,9 +50,10 @@ section {
 
   display: flex;
   flex-wrap: wrap;
-  width: calc((var(--box-size) * var(--board-size)) + 1px);
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
+  width: calc(var(--box-size) * var(--board-size));
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  box-sizing: content-box;
   margin: 0 auto;
 }
 
@@ -75,11 +76,14 @@ section {
   place-content: center;
   pointer-events: all;
 
-  border-top: 1px solid black;
-  border-left: 1px solid black;
+  box-sizing: border-box;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
   width: var(--box-size);
   height: var(--box-size);
   background-color: white;
+
+  transition: background-color 0.4s ease-in-out;
 
   .number {
     position: absolute;
@@ -133,6 +137,7 @@ section {
   &.blocked {
     background-color: black;
     color: black;
+    border: 0;
 
     &::before {
       content: "";
