@@ -99,8 +99,10 @@ export default class BoardView {
 
   clearGrid() {
     this.cells.forEach((c) => {
-      c.shape.reset();
-      c.clearAllStates();
+      if (!c.isBlocked) {
+        c.shape.reset();
+        c.clearAllStates();
+      }
     });
     this.subscribers.notify(LAYOUT_EVENT);
   }
