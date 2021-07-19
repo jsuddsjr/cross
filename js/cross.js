@@ -17,6 +17,7 @@ const clearErrorsBtn = document.querySelector(".js-clear-errors");
 const saveTemplateBtn = document.querySelector(".js-save-template");
 const defineWordBtn = document.querySelector(".js-define-word");
 const searchWikiBtn = document.querySelector(".js-search-wiki");
+const findCluesBtn = document.querySelector(".js-find-clues");
 
 if (
   board instanceof HTMLElement &&
@@ -26,7 +27,8 @@ if (
   clearErrorsBtn instanceof HTMLButtonElement &&
   saveTemplateBtn instanceof HTMLButtonElement &&
   defineWordBtn instanceof HTMLButtonElement &&
-  searchWikiBtn instanceof HTMLButtonElement
+  searchWikiBtn instanceof HTMLButtonElement &&
+  findCluesBtn instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
   new WordListView(boardView, ".clues", ".totals");
@@ -115,6 +117,7 @@ if (
 
   defineWordBtn.onclick = wordHandler.bind(null, "https://google.com/search?q=define%20");
   searchWikiBtn.onclick = wordHandler.bind(null, "https://en.wikipedia.org/wiki/");
+  findCluesBtn.onclick = wordHandler.bind(null, "https://www.wordplays.com/crossword-clues/");
 
   document.body.addEventListener("keydown", (e) => {
     switch (e.key) {
