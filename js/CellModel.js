@@ -31,7 +31,7 @@ export default class CellModel {
     this.subscribers = new Subscribers(this);
 
     this.cellElement.addEventListener("click", clickHandler.bind(this));
-    this.cellElement.addEventListener("keydown", keyHandler.bind(this));
+    this.cellElement.addEventListener("keydown", keyHandler.bind(this), true);
   }
 
   /**
@@ -116,6 +116,7 @@ export default class CellModel {
       if (!this.numberElement) {
         this.numberElement = this.cellElement.appendChild(document.createElement("div"));
         this.numberElement.className = "number";
+        this.numberElement.contentEditable = false;
       }
       this.numberElement.textContent = num.toString();
     } else {
