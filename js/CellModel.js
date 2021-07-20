@@ -31,7 +31,8 @@ export default class CellModel {
     this.subscribers = new Subscribers(this);
 
     this.cellElement.addEventListener("click", clickHandler.bind(this));
-    this.cellElement.addEventListener("keydown", keyHandler.bind(this), true);
+    this.cellElement.addEventListener("input", inputHandler.bind(this));
+    this.cellElement.addEventListener("keypress", keyHandler.bind(this), true);
   }
 
   /**
@@ -116,7 +117,6 @@ export default class CellModel {
       if (!this.numberElement) {
         this.numberElement = this.cellElement.appendChild(document.createElement("div"));
         this.numberElement.className = "number";
-        this.numberElement.contentEditable = false;
       }
       this.numberElement.textContent = num.toString();
     } else {
@@ -191,6 +191,23 @@ function clickHandler(e) {
   } else {
     this.activeWord = this.activeWord ? (this.activeWord === this.across ? this.down : this.across) : this.across;
     if (this.activeWord) this.activeWord.setActiveWord(this);
+  }
+}
+
+/**
+ * @this {CellModel}
+ * @param {InputEvent} e
+ */
+function inputHandler(e) {
+  const keyEvent = new KeyboardEvent("keydown", {
+    key: e.data,
+    target: e.target,
+  });
+  keyHandler.bind(this)(keyEvent);
+  if (this.numberElement) {
+    this.numberElement.textContent = this.numberElement.textContent.replace(e.data, "");
+  } else {
+    this.cellElement.textContent = "";
   }
 }
 
