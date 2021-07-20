@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Crossword Editor</title>
     <meta name="description" content="A simple American-style crossword editor. Final project for WDD330." />
     <!-- Latest compiled and minified CSS -->
@@ -29,7 +29,7 @@
   <body class="d-flex flex-column vh-100">
     <main class="flex-shrink-0">
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark bg-gradient">
+      <nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark bg-gradient">
         <div class="container-fluid">
           <div class="navbar-brand">Crossword Editor</div>
 
@@ -138,7 +138,8 @@
       </nav>
 
       <section>
-        <div class="board"></div>
+        <div class="board m-auto ms-2"></div>
+
         <section class="clues">
           <h2>Across</h2>
           <ol id="across"></ol>
