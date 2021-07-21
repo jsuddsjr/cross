@@ -55,16 +55,22 @@ export default class WordListView {
   }
 
   refreshScores() {
-    this.scrabbleScore.textContent = [...this.clues.querySelectorAll(".score")].reduce(
-      (score, el) => score + parseInt(el.dataset.score),
-      0
-    );
     const shape = this.board.cells.map((c) => c.shape.getShape()).join("");
-    const uniqueLetters = new Set([...shape].filter((c) => !ShapeModel.isShapeChar(c)));
-    this.lettersElement.textContent = uniqueLetters.size;
     if (this.shapeElement) {
       this.shapeElement.textContent = shape;
     }
+
+    const letterCells = [...shape].filter((c) => !ShapeModel.isShapeChar(c));
+    const uniqueLetters = new Set(letterCells);
+    this.lettersElement.textContent = uniqueLetters.size;
+
+    const scrabbleScore = [...this.clues.querySelectorAll(".score")].reduce(
+      (score, el) => score + parseInt(el.dataset.score),
+      0
+    );
+
+    const countCellsTwice = letterCells.length * 2;
+    this.scrabbleScore.textContent = `${scrabbleScore} (${(scrabbleScore / countCellsTwice).toFixed(2)})`;
   }
 
   /**
