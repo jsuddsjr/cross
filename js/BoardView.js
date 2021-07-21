@@ -211,8 +211,6 @@ export default class BoardView {
 
       bools = await Promise.all(promises);
     } while (--maxIterations && bools.length && bools.some((b) => b));
-
-    this.subscribers.notify(LAYOUT_EVENT);
   }
 
   /**

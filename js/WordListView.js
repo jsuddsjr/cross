@@ -11,8 +11,13 @@ export default class WordListView {
    */
   constructor(board, cluesSelector, totalsSelector) {
     this.board = board.onLayout(this.handleBoardLayout.bind(this));
-    this.acrossElement = document.querySelector(cluesSelector + " #across");
-    this.downElement = document.querySelector(cluesSelector + " #down");
+    this.clues = document.querySelector(cluesSelector);
+
+    this.clueElements = {
+      across: this.clues.querySelector("#across"),
+      down: this.clues.querySelector("#down"),
+    };
+
     this.countElement = document.querySelector(totalsSelector + " .wordCount");
     this.lettersElement = document.querySelector(totalsSelector + " .letterCount");
     this.scrabbleScore = document.querySelector(totalsSelector + " .scrabbleScore");
@@ -20,44 +25,45 @@ export default class WordListView {
     // DEBUG
     this.shapeElement = document.querySelector(".shape");
 
-    /** @type {WordModel[]} */
-    this.across = this.down = null;
-
-    /** @type {Map<WordModel, String>} */
+    /** @type {Map<WordModel, HTMLElement>} */
     this.clueMap = new Map();
   }
 
+  /**
+   * @typedef {Object} WordInfo
+   * @property {HTMLElement} element
+   * @property {String} clue
+   * @property {Number} score
+   * @property {Boolean} isAcross
+   * @property {Number} number
+   */
+
   handleBoardLayout() {
     this.clueMap.clear();
-    this.across = [];
-    this.down = [];
+    this.clueElements.across.innerHTML = "";
+    this.clueElements.down.innerHTML = "";
 
     const wordList = this.board.getWordList();
     this.countElement.textContent = wordList.length;
 
+    const incubator = document.createElement("div");
+
     for (let w of wordList) {
-      this[w.direction].push(w);
-      this.clueMap.set(w, this.clueFromWord(w));
-      w.onUpdated(this.handleWordUpdate.bind(this));
+      incubator.innerHTML = this.clueFromWord(w);
+      const element = incubator.firstChild;
+      w.onUpdated(this.updateFromWord.bind(this, element));
+      this.clueMap.set(w, element);
+      this.clueElements[w.direction].appendChild(element);
     }
 
-    this.repaint();
+    this.refreshScores();
   }
 
-  handleWordUpdate(word) {
-    this.clueMap.set(word, this.clueFromWord(word));
-    this.repaint();
-  }
-
-  repaint() {
-    this.acrossElement.innerHTML = this.across.map((w) => this.clueMap.get(w)).join("");
-    this.downElement.innerHTML = this.down.map((w) => this.clueMap.get(w)).join("");
-    this.scrabbleScore.textContent = [...this.clueMap.keys()].reduce((score, w) => (score += w.getScrabbleValue()), 0);
-
+  refreshScores() {
+    this.scrabbleScore.textContent = this.board.getWordList().reduce((score, w) => (score += w.getScrabbleValue()), 0);
     const shape = this.board.cells.map((c) => c.shape.getShape()).join("");
     const uniqueLetters = new Set([...shape].filter((c) => !ShapeModel.isShapeChar(c)));
     this.lettersElement.textContent = uniqueLetters.size;
-
     if (this.shapeElement) {
       this.shapeElement.textContent = shape;
     }
@@ -73,6 +79,16 @@ export default class WordListView {
     clueTemplate[5] = word.getScrabbleValue();
     return clueTemplate.join("");
   }
+
+  /**
+   * @param {HTMLLIElement} element
+   * @param {*} word
+   */
+  updateFromWord(element, word) {
+    element.querySelector(".clue").textContent = word.getShape();
+    element.querySelector(".score").dataset.score = word.getScrabbleValue();
+    setTimeout(this.refreshScores.bind(this), 500);
+  }
 }
 
 const clueTemplate = [
@@ -80,7 +96,7 @@ const clueTemplate = [
   null,
   '"><span class="clue">',
   null,
-  '</span> <span data-score="',
+  '</span> <span class="score" data-score="',
   null,
   '"></span></li>',
 ];
