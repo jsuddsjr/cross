@@ -24,9 +24,6 @@ export default class WordListView {
 
     // DEBUG
     this.shapeElement = document.querySelector(".shape");
-
-    /** @type {Map<WordModel, HTMLElement>} */
-    this.clueMap = new Map();
   }
 
   /**
@@ -39,7 +36,6 @@ export default class WordListView {
    */
 
   handleBoardLayout() {
-    this.clueMap.clear();
     this.clueElements.across.innerHTML = "";
     this.clueElements.down.innerHTML = "";
 
@@ -52,7 +48,6 @@ export default class WordListView {
       incubator.innerHTML = this.clueFromWord(w);
       const element = incubator.firstChild;
       w.onUpdated(this.updateFromWord.bind(this, element));
-      this.clueMap.set(w, element);
       this.clueElements[w.direction].appendChild(element);
     }
 
@@ -85,7 +80,7 @@ export default class WordListView {
    * @param {*} word
    */
   updateFromWord(element, word) {
-    element.querySelector(".clue").textContent = word.getShape();
+    element.querySelector(".clue").textContent = word.getWord();
     element.querySelector(".score").dataset.score = word.getScrabbleValue();
     setTimeout(this.refreshScores.bind(this), 500);
   }
