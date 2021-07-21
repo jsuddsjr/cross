@@ -87,9 +87,18 @@ export default class BoardView {
     }
   }
 
+  /**
+   * Load string representation of board.
+   * @param {String} template
+   */
   loadTemplate(template) {
-    this.cells = this.store.cellsFromBoard({ cells: template });
-    this.show();
+    const root = Math.sqrt(template.length);
+    if (root === Math.trunc(root)) {
+      this.cells = this.store.cellsFromBoard({ cells: template });
+      this.show();
+    } else {
+      this.clear();
+    }
   }
 
   clear() {

@@ -8,6 +8,7 @@ const DEFAULT_BOARD_SIZE = "15";
 const params = new URLSearchParams(document.location.search);
 const boardSize = parseInt(params.get("size") || DEFAULT_BOARD_SIZE);
 const boardName = params.get("name");
+const templateShape = params.get("template");
 
 const board = document.querySelector(".board");
 const saveBtn = document.querySelector(".js-save-btn");
@@ -50,7 +51,20 @@ if (
     }
   });
 
-  boardView.load(boardName);
+  if (templateShape) {
+    boardView.loadTemplate(templateShape);
+  } else {
+    boardView.load(boardName);
+  }
+
+  /************************
+   * Save modal
+   ************************/
+
+  const saveAsModal = document.getElementById("saveBoardAs");
+  saveAsModal.addEventListener("shown.bs.modal", function () {
+    saveAsModal.querySelector("#save-form #name").focus();
+  });
 
   boardView.onSaved(() => {
     alert(`Saved board as ${boardView.title}`);
@@ -73,6 +87,10 @@ if (
       boardView.save(name.value);
     }
   };
+
+  /***********************
+   * Menu buttons
+   ***********************/
 
   clearWordBtn.onclick = (e) => {
     e.preventDefault();
@@ -98,6 +116,10 @@ if (
     }
   };
 
+  /**********************
+   * Help menu functions
+   **********************/
+
   const createAnchor = (url, target = "_blank") => {
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -118,6 +140,10 @@ if (
   defineWordBtn.onclick = wordHandler.bind(null, "https://google.com/search?q=define%20");
   searchWikiBtn.onclick = wordHandler.bind(null, "https://en.wikipedia.org/wiki/");
   findCluesBtn.onclick = wordHandler.bind(null, "https://www.wordplays.com/crossword-clues/");
+
+  /*******************
+   * Keyboard shortcuts
+   ********************/
 
   document.body.addEventListener("keydown", (e) => {
     switch (e.key) {

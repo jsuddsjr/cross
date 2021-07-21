@@ -22,6 +22,8 @@ export default class LoadBoardModal {
     };
 
     this.loadBoards();
+
+    this.modal.addEventListener("shown.bs.modal", () => this.select.focus());
   }
 
   loadBoards() {
