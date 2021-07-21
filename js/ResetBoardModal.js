@@ -21,7 +21,9 @@ export default class ResetBoardModal {
 
     this.store = new GameStore();
     this.subscribers = new Subscribers(this);
-    this.fetchPreviews();
+
+    // Fetch first previews when the modal is displayed.
+    this.modal.addEventListener("shown.bs.modal", () => this.fetchPreviews(), { once: true });
 
     this.links.forEach((a) =>
       a.addEventListener("click", () => {
