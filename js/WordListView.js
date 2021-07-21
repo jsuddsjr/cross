@@ -55,7 +55,10 @@ export default class WordListView {
   }
 
   refreshScores() {
-    this.scrabbleScore.textContent = this.board.getWordList().reduce((score, w) => (score += w.getScrabbleValue()), 0);
+    this.scrabbleScore.textContent = [...this.clues.querySelectorAll(".score")].reduce(
+      (score, el) => score + parseInt(el.dataset.score),
+      0
+    );
     const shape = this.board.cells.map((c) => c.shape.getShape()).join("");
     const uniqueLetters = new Set([...shape].filter((c) => !ShapeModel.isShapeChar(c)));
     this.lettersElement.textContent = uniqueLetters.size;
@@ -82,7 +85,7 @@ export default class WordListView {
   updateFromWord(element, word) {
     element.querySelector(".clue").textContent = word.getWord();
     element.querySelector(".score").dataset.score = word.getScrabbleValue();
-    setTimeout(this.refreshScores.bind(this), 500);
+    setTimeout(this.refreshScores.bind(this), 200);
   }
 }
 
