@@ -211,6 +211,10 @@ section {
     margin-bottom: 1em;
   }
 
+  .error {
+    color: red;
+  }
+
   span[data-score]:before {
     content: "[" attr(data-score) "]";
     font-size: 0.8em;

@@ -191,6 +191,9 @@ section {
 .clues .across {
   margin-bottom: 1em;
 }
+.clues .error {
+  color: red;
+}
 .clues span[data-score]:before {
   content: "[" attr(data-score) "]";
   font-size: 0.8em;

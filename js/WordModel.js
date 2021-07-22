@@ -1,6 +1,7 @@
 import Subscribers from "./Subscribers.js";
 
 const UPDATED_EVENT = "updated";
+const STATE_EVENT = "stateChange";
 
 const ACTIVE_CLASS = "active";
 const ACTIVE_CELL_CLASS = "active-cell";
@@ -124,6 +125,13 @@ export default class WordModel {
   }
 
   /**
+   * @return True, if word error state enabled.
+   */
+  isError() {
+    return this.cells[0].cellElement.classList.contains(WORD_WARNING_CLASS);
+  }
+
+  /**
    * Highlight active word and cell. If word is already active, then
    * advance the cell with focus in the specified direction.
    * @param {CellModel} activeCell
@@ -182,6 +190,7 @@ export default class WordModel {
    */
   clearAllStates() {
     this.removeStates(...ALL_STATES);
+    this.subscribers.notify(STATE_EVENT);
   }
 
   /**
@@ -190,6 +199,7 @@ export default class WordModel {
    */
   addStates(...states) {
     this.cells.forEach((c) => c.cellElement.classList.add(...states));
+    this.subscribers.notify(STATE_EVENT);
   }
 
   /**
@@ -198,6 +208,7 @@ export default class WordModel {
    */
   removeStates(...states) {
     this.cells.forEach((c) => c.cellElement.classList.remove(...states));
+    this.subscribers.notify(STATE_EVENT);
   }
 
   /**
@@ -233,6 +244,16 @@ export default class WordModel {
    */
   onUpdated(cb) {
     this.subscribers.subscribe(UPDATED_EVENT, cb);
+    return this;
+  }
+
+  /**
+   * Notify when cell changes occur.
+   * @param {import("./Subscribers.js").NotifyFunc} cb
+   * @returns This
+   */
+  onStateChange(cb) {
+    this.subscribers.subscribe(STATE_EVENT, cb);
     return this;
   }
 

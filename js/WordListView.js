@@ -48,6 +48,7 @@ export default class WordListView {
       incubator.innerHTML = this.clueFromWord(w);
       const element = incubator.firstChild;
       w.onUpdated(this.updateFromWord.bind(this, element));
+      w.onStateChange(this.changeState.bind(this, element));
       this.clueElements[w.direction].appendChild(element);
     }
 
@@ -86,12 +87,24 @@ export default class WordListView {
 
   /**
    * @param {HTMLLIElement} element
-   * @param {*} word
+   * @param {WordModel} word
    */
   updateFromWord(element, word) {
     element.querySelector(".clue").textContent = word.getWord();
     element.querySelector(".score").dataset.score = word.getScrabbleValue();
     setTimeout(this.refreshScores.bind(this), 200);
+  }
+
+  /**
+   * @param {HTMLElement} element
+   * @param {WordModel} word
+   */
+  changeState(element, word) {
+    if (word.isError()) {
+      element.classList.add("error");
+    } else {
+      element.classList.remove("error");
+    }
   }
 }
 
