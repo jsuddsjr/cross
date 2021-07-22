@@ -128,7 +128,8 @@ export default class WordModel {
    * @return True, if word error state enabled.
    */
   isError() {
-    return this.cells[0].cellElement.classList.contains(WORD_WARNING_CLASS);
+    const classList = this.cells[0].cellElement.classList;
+    return classList.contains(WORD_WARNING_CLASS) && classList.contains(this.direction);
   }
 
   /**
