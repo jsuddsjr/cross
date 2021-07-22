@@ -3,6 +3,7 @@ import WordModel from "./WordModel.js";
 import WordIndex from "./WordIndex.js";
 import Subscribers from "./Subscribers.js";
 import GameStore from "./GameStore.js";
+import ShapeModel from "./ShapeModel.js";
 
 const LAYOUT_EVENT = "layout";
 const SAVED_EVENT = "saved";
@@ -94,7 +95,7 @@ export default class BoardView {
   loadTemplate(template) {
     const root = Math.sqrt(template.length);
     if (root === Math.trunc(root)) {
-      this.cells = this.store.cellsFromBoard({ cells: template });
+      this.cells = this.store.cellsFromBoard({ cells: template.replace(/_/g, ShapeModel.blockedType) });
       this.show();
     } else {
       this.clear();

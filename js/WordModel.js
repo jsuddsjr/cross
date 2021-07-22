@@ -216,7 +216,14 @@ export default class WordModel {
    * @returns Point value
    */
   getScrabbleValue() {
-    return this.cells.map((c) => scrabblePoints.get(c.shape.getLetter())).reduce((p, c) => c + p);
+    return WordModel.getScrabbleValue(this.cells.map((c) => c.shape.getLetter()));
+  }
+
+  /**
+   * @param {String[]} letters
+   */
+  static getScrabbleValue(letters) {
+    return letters.map((c) => scrabblePoints.get(c)).reduce((p, c) => c + p);
   }
 
   /**
