@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Crossword Editor</title>
     <meta name="description" content="A simple American-style crossword editor. Final project for WDD330." />
     <!-- Latest compiled and minified CSS -->
@@ -61,11 +62,11 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="saveMenu">
                   <li>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">
+                    <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveBoardAs">
                       Save board
                     </button>
                   </li>
-                  <li><button class="dropdown-item js-save-template">Save as template</button></li>
+                  <li><button type="button" class="dropdown-item js-save-template">Save as template</button></li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
                     <!-- Button trigger modal -->
@@ -167,7 +168,7 @@
     </footer>
 
     <div class="modal fade" id="saveBoardAs" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="Label">Save board as</h5>
@@ -251,7 +252,7 @@
       aria-labelledby="loadSavedModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="loadSavedModalLabel">Load saved board</h5>
@@ -261,14 +262,7 @@
             <form id="load-form">
               <div class="select">
                 <label id="saved_name_label" for="saved_name">Boards</label>
-                <div class="input-group mb-3">
-                  <select
-                    id="saved_name"
-                    name="saved_name"
-                    class="form-control form-select"
-                    aria-label="Boards"
-                  ></select>
-                </div>
+                <select id="saved_name" name="saved_name" class="form-control form-select" aria-label="Boards"></select>
               </div>
             </form>
           </div>
@@ -289,7 +283,7 @@
       aria-labelledby="helpModalTitle"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="helpModalTitle">Hints and Tips</h5>
