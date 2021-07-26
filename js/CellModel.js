@@ -30,9 +30,10 @@ export default class CellModel {
     this.numberElement = null;
     this.subscribers = new Subscribers(this);
 
-    this.cellElement.addEventListener("click", clickHandler.bind(this));
-    this.cellElement.addEventListener("input", inputHandler.bind(this));
+    this.cellElement.addEventListener("click", clickHandler.bind(this), true);
+    this.cellElement.addEventListener("input", inputHandler.bind(this), true);
     this.cellElement.addEventListener("keypress", keyHandler.bind(this), true);
+    this.cellElement.addEventListener("keydown", keyHandler.bind(this), true);
   }
 
   /**

@@ -235,7 +235,7 @@ export default class WordModel {
    * @param {String[]} letters
    */
   static getScrabbleValue(letters) {
-    return letters.map((c) => scrabblePoints.get(c)).reduce((p, c) => c + p);
+    return letters.map((c) => scrabblePoints.get(c)).reduce((p, c) => c + p, 0);
   }
 
   /**
