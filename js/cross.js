@@ -175,5 +175,5 @@ if (
     }
   });
 } else {
-  throw new Error("Initialization failed. Missing require UI elements.");
+  throw new Error("Initialization failed. Missing required UI elements.");
 }
