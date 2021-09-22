@@ -16,9 +16,12 @@ const clearWordBtn = document.querySelector(".js-clear-word");
 const clearGridBtn = document.querySelector(".js-clear-grid");
 const clearErrorsBtn = document.querySelector(".js-clear-errors");
 const saveTemplateBtn = document.querySelector(".js-save-template");
-const defineWordBtn = document.querySelector(".js-define-word");
+
+const searchCluesBtn = document.querySelector(".js-search-clues");
+const searchWordBtn = document.querySelector(".js-search-word");
 const searchWikiBtn = document.querySelector(".js-search-wiki");
-const findCluesBtn = document.querySelector(".js-find-clues");
+const searchScrabble = document.querySelector(".js-search-scrabble");
+const searchDictionary = document.querySelector(".js-search-freedict");
 
 if (
   board instanceof HTMLElement &&
@@ -27,9 +30,11 @@ if (
   clearGridBtn instanceof HTMLButtonElement &&
   clearErrorsBtn instanceof HTMLButtonElement &&
   saveTemplateBtn instanceof HTMLButtonElement &&
-  defineWordBtn instanceof HTMLButtonElement &&
+  searchWordBtn instanceof HTMLButtonElement &&
   searchWikiBtn instanceof HTMLButtonElement &&
-  findCluesBtn instanceof HTMLButtonElement
+  searchCluesBtn instanceof HTMLButtonElement &&
+  searchScrabble instanceof HTMLButtonElement &&
+  searchDictionary instanceof HTMLButtonElement
 ) {
   const boardView = new BoardView(board, boardSize);
   new WordListView(boardView, ".clues", ".totals");
@@ -133,13 +138,15 @@ if (
     if (WordModel.activeWord && WordModel.activeWord.isComplete) {
       createAnchor(urlTemplate + WordModel.activeWord.getShape());
     } else {
-      alert("Select a complete word first.");
+      alert("Incomplete word. Fill all the squares and try again.");
     }
   };
 
-  defineWordBtn.onclick = wordHandler.bind(null, "https://google.com/search?q=define%20");
+  searchWordBtn.onclick = wordHandler.bind(null, "https://google.com/search?q=define%20");
   searchWikiBtn.onclick = wordHandler.bind(null, "https://en.wikipedia.org/wiki/");
-  findCluesBtn.onclick = wordHandler.bind(null, "https://www.wordplays.com/crossword-clues/");
+  searchCluesBtn.onclick = wordHandler.bind(null, "https://www.wordplays.com/crossword-clues/");
+  searchScrabble.onclick = wordHandler.bind(null, "https://scrabblewordfinder.org/dictionary/");
+  searchDictionary.onclick = wordHandler.bind(null, "https://www.thefreedictionary.com/");
 
   /*******************
    * Keyboard shortcuts

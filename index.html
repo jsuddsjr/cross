@@ -105,7 +105,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#resetBoardModal"
                 >
-                  <i class="bi-asterisk" aria-hidden="true"></i>&nbsp;Reset board
+                  <i class="bi-asterisk" aria-hidden="true"></i>&nbsp;New grid
                 </button>
               </li>
               <li class="navbar-item">
@@ -121,10 +121,12 @@
                   <i class="bi-info-circle-fill" aria-hidden="true"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="helpMenu">
-                  <li><button type="button" class="dropdown-item js-find-clues">Find clues</button></li>
-                  <li><button type="button" class="dropdown-item js-define-word">Search definition</button></li>
-                  <li><button type="button" class="dropdown-item js-search-wiki">Search Wikipedia</button></li>
-
+                  <li><button type="button" class="dropdown-item js-search-clues">Find clues</button></li>
+                  <li><button type="button" class="dropdown-item js-search-word">Search Google</button></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><button type="button" class="dropdown-item js-search-wiki">Wikipedia</button></li>
+                  <li><button type="button" class="dropdown-item js-search-scrabble">Scrabble Word Finder</button></li>
+                  <li><button type="button" class="dropdown-item js-search-freedict">Free Dictionary</button></li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
                     <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#helpModal">
