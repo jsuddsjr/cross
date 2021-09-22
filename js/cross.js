@@ -135,10 +135,14 @@ if (
 
   const wordHandler = (urlTemplate, e) => {
     e.preventDefault();
-    if (WordModel.activeWord && WordModel.activeWord.isComplete) {
-      createAnchor(urlTemplate + WordModel.activeWord.getShape());
+    if (WordModel.activeWord) {
+      if (WordModel.activeWord.isComplete) {
+        createAnchor(urlTemplate + WordModel.activeWord.getShape());
+      } else {
+        alert("Incomplete word. Fill all the squares and try again.");
+      }
     } else {
-      alert("Incomplete word. Fill all the squares and try again.");
+      alert("Select a filled-in word first.");
     }
   };
 
